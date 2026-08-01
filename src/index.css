@@ -1,0 +1,147 @@
+:root {
+  --bg: #0e0c0a;
+  --bg-deep: #050403;
+  --bg-soft: #17110d;
+
+  --ink: #f3ead8;
+  --muted: rgba(243, 234, 216, 0.62);
+  --faint: rgba(243, 234, 216, 0.38);
+
+  --line: rgba(243, 234, 216, 0.14);
+  --line-soft: rgba(243, 234, 216, 0.08);
+
+  --gold: #9b6a36;
+  --gold-soft: #c18a4a;
+
+  --brown: #3a1b13;
+  --deep-red: #281010;
+
+  color: var(--ink);
+  background: var(--bg);
+
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "Times New Roman",
+    serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--bg);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100svh;
+  color: var(--ink);
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(155, 106, 54, 0.12),
+      transparent 34rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--bg-deep) 0%,
+      var(--bg) 42%,
+      #070504 100%
+    );
+  overflow-x: hidden;
+}
+
+::selection {
+  color: var(--bg);
+  background: var(--gold-soft);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+:focus-visible {
+  outline: 1px solid var(--gold-soft);
+  outline-offset: 4px;
+}
+
+#root {
+  min-height: 100svh;
+  isolation: isolate;
+}
+html, body { overflow-x: clip; }
+@supports not (overflow: clip){
+  html, body { overflow-x: hidden; }
+}
+html.has-lenis,
+html.has-lenis body {
+  overscroll-behavior: none;
+}
+
+@media (max-width: 767px) {
+  html,
+  body {
+    overscroll-behavior: auto;
+  }
+}

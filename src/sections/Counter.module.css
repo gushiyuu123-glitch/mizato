@@ -1,0 +1,187 @@
+/* src/sections/Counter.module.css */
+
+.counter {
+  position: relative;
+  min-height: 116svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: #050403;
+  color: rgba(243, 234, 216, 0.9);
+
+  --axis-trace-y: -115%;
+  --axis-trace-opacity: 0;
+}
+
+.counter::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 16% 46%,
+      rgba(185, 120, 60, 0.045),
+      transparent 34rem
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0.08) 0%,
+      rgba(5, 4, 3, 0.12) 54%,
+      rgba(5, 4, 3, 0.82) 100%
+    );
+}
+
+/* 右SVG */
+.axisHeading {
+  position: absolute;
+  top: 50%;
+  right: clamp(46px, 5.8vw, 104px);
+  z-index: 2;
+  margin: 0;
+  line-height: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.axisReveal {
+  position: relative;
+  display: block;
+  width: clamp(92px, 7.1vw, 142px);
+  height: clamp(560px, 76vh, 820px);
+  overflow: hidden;
+}
+
+/* 文字本体 */
+.axisImage {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.56;
+  filter:
+    drop-shadow(0 0 10px rgba(185, 120, 60, 0.075))
+    drop-shadow(0 22px 54px rgba(0, 0, 0, 0.72));
+  will-change: opacity, transform, filter;
+}
+
+/* SVG文字の形だけを光が走る */
+.axisReveal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(243, 234, 216, 0.42) 44%,
+    rgba(185, 120, 60, 0.24) 52%,
+    transparent 100%
+  );
+
+  opacity: var(--axis-trace-opacity, 0);
+  transform: translateY(var(--axis-trace-y, -115%));
+
+  -webkit-mask-image: url("/images/at-the-counter.svg");
+  mask-image: url("/images/at-the-counter.svg");
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  mix-blend-mode: screen;
+  will-change: opacity, transform;
+}
+
+/* アクセシビリティ用 */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .axisHeading {
+    right: clamp(38px, 5vw, 78px);
+  }
+
+  .axisReveal {
+    width: clamp(82px, 7.4vw, 118px);
+    height: clamp(500px, 72vh, 740px);
+  }
+
+  .axisImage {
+    opacity: 0.52;
+  }
+}
+
+/* Small Tablet */
+@media (max-width: 900px) {
+  .counter {
+    min-height: 104svh;
+  }
+
+  .axisHeading {
+    right: clamp(30px, 4.8vw, 56px);
+  }
+
+  .axisReveal {
+    width: clamp(70px, 8vw, 98px);
+    height: clamp(440px, 66vh, 640px);
+  }
+
+  .axisImage {
+    opacity: 0.48;
+  }
+}
+
+/* SP */
+@media (max-width: 640px) {
+  .counter {
+    min-height: 96svh;
+  }
+
+  .axisHeading {
+    top: 50%;
+    right: 26px;
+  }
+
+  .axisReveal {
+    width: clamp(58px, 14vw, 76px);
+    height: clamp(360px, 58vh, 520px);
+  }
+
+  .axisImage {
+    opacity: 0.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .axisReveal::after {
+    display: none;
+  }
+
+  .axisImage {
+    opacity: 0.56;
+    filter:
+      drop-shadow(0 0 10px rgba(185, 120, 60, 0.075))
+      drop-shadow(0 22px 54px rgba(0, 0, 0, 0.72));
+  }
+}

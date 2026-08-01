@@ -1,0 +1,515 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 48px 24px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-deep);
+
+  --hero-bg-y: 0vh;
+  --hero-bg-scale: 1;
+  --hero-text-y: 0vh;
+  --hero-text-opacity: 1;
+  --hero-dim: 0;
+}
+
+.liquidCanvas {
+  position: absolute;
+  inset: -6vh -3vw;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--bg-deep);
+  transform: translate3d(0, var(--hero-bg-y), 0)
+    scale(var(--hero-bg-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.liquidCanvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+  最終仕上げの極薄レイヤー。
+  画像に膜をかけず、右側の文字エリアだけほんの少し沈める。
+*/
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0) 0%,
+      rgba(5, 4, 3, 0.01) 24%,
+      rgba(5, 4, 3, 0.045) 48%,
+      rgba(5, 4, 3, 0.14) 74%,
+      rgba(5, 4, 3, 0.28) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.1) 0%,
+      rgba(5, 4, 3, 0) 36%,
+      rgba(5, 4, 3, 0.12) 100%
+    );
+}
+
+/*
+  外周の締めだけを極薄で残す。
+  濁りではなく、画面端の落ち着き用。
+*/
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 46% 48%,
+      transparent 0%,
+      rgba(5, 4, 3, 0.02) 66%,
+      rgba(5, 4, 3, 0.22) 100%
+    );
+  opacity: calc(0.22 + var(--hero-dim));
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  justify-self: end;
+  width: min(720px, 100%);
+  margin-right: 7vw;
+  text-align: center;
+  opacity: var(--hero-text-opacity);
+  transform: translate3d(0, calc(-6.8vh + var(--hero-text-y)), 0);
+  will-change: transform, opacity;
+}
+
+/* ロゴ以外の文字を個別に出す */
+.eyebrow,
+.copy,
+.lead,
+.openMeta {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateY(10px);
+  animation: textReveal 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.eyebrow {
+  margin: 0 0 24px;
+  color: rgba(193, 138, 74, 0.84);
+  font-size: clamp(0.6rem, 0.82vw, 0.72rem);
+  letter-spacing: 0.2em;
+  font-kerning: normal;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.72);
+  animation-delay: 720ms;
+}
+
+/* SVG化したMIZATOロゴ */
+.logo {
+  position: relative;
+  margin: 0;
+  line-height: 1;
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(10px);
+  animation: logoFrameReveal 760ms cubic-bezier(0.22, 1, 0.36, 1) 840ms forwards;
+}
+
+.logoMark {
+  position: relative;
+  display: inline-block;
+  width: clamp(270px, 42vw, 620px);
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.logoMark::after {
+  content: "";
+  position: absolute;
+  top: -12%;
+  bottom: -12%;
+  left: -18%;
+  width: 76px;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(246, 190, 118, 0.04) 18%,
+      rgba(246, 190, 118, 0.28) 48%,
+      rgba(246, 190, 118, 0.04) 78%,
+      transparent 100%
+    );
+  opacity: 0;
+  transform: translateX(0) skewX(-15deg);
+  mix-blend-mode: screen;
+  animation: logoTrace 1750ms cubic-bezier(0.22, 1, 0.36, 1) 920ms forwards;
+}
+
+.logoImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  clip-path: inset(0 100% 0 0);
+  filter:
+    drop-shadow(0 0 10px rgba(224, 161, 95, 0.12))
+    drop-shadow(0 0 26px rgba(155, 106, 54, 0.08))
+    drop-shadow(0 14px 42px rgba(0, 0, 0, 0.88));
+  animation: logoDraw 1750ms cubic-bezier(0.22, 1, 0.36, 1) 920ms forwards;
+}
+
+.copy {
+  margin: 42px 0 0;
+  color: rgba(243, 234, 216, 0.93);
+  font-size: clamp(1.22rem, 2.28vw, 2.04rem);
+  line-height: 1.68;
+  letter-spacing: 0.04em;
+  font-kerning: normal;
+  text-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.84),
+    0 0 16px rgba(5, 4, 3, 0.7);
+  animation-delay: 2040ms;
+}
+
+.lead {
+  width: min(500px, 100%);
+  margin: 25px auto 0;
+  color: rgba(243, 234, 216, 0.56);
+  font-size: clamp(0.78rem, 0.96vw, 0.88rem);
+  line-height: 2.05;
+  letter-spacing: 0.034em;
+  font-kerning: normal;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.82);
+  animation-delay: 2220ms;
+}
+
+/* OPEN情報は画像の上ではなく、文字群の中に入れる */
+.openMeta {
+  position: relative;
+  display: inline-block;
+  margin: 36px auto 0;
+  padding-top: 20px;
+  color: rgba(243, 234, 216, 0.42);
+  font-family: "Times New Roman", "Yu Mincho", serif;
+  font-size: clamp(0.62rem, 0.75vw, 0.72rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+  animation-delay: 2400ms;
+}
+
+.openMeta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 72px;
+  height: 1px;
+  background: rgba(193, 138, 74, 0.3);
+  transform: translateX(-50%);
+}
+
+/* CTAは上で細く見せる */
+.reserveLink {
+  position: absolute;
+  right: 48px;
+  top: 40px;
+  z-index: 2;
+  color: rgba(243, 234, 216, 0.5);
+  font-family: "Times New Roman", "Yu Mincho", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition:
+    color 260ms ease,
+    transform 260ms ease;
+  animation: metaReveal 1100ms cubic-bezier(0.22, 1, 0.36, 1) 2540ms forwards;
+}
+
+.reserveLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 1px;
+  background: rgba(193, 138, 74, 0.52);
+  transform: scaleX(0.42);
+  transform-origin: left;
+  transition: transform 260ms ease;
+}
+
+.reserveLink:hover {
+  color: rgba(243, 234, 216, 0.86);
+  transform: translateY(-1px);
+}
+
+.reserveLink:hover::after {
+  transform: scaleX(1);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes logoFrameReveal {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes logoDraw {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes logoTrace {
+  0% {
+    opacity: 0;
+    transform: translateX(0) skewX(-15deg);
+  }
+
+  14% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 0.72;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(760px) skewX(-15deg);
+  }
+}
+
+@keyframes metaReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .inner {
+    width: min(660px, 100%);
+    margin-right: 5vw;
+  }
+
+  .logoMark {
+    width: clamp(260px, 43vw, 560px);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 4, 3, 0.1) 0%,
+        rgba(5, 4, 3, 0.06) 45%,
+        rgba(5, 4, 3, 0.22) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(5, 4, 3, 0.2) 0%,
+        rgba(5, 4, 3, 0.04) 42%,
+        rgba(5, 4, 3, 0.32) 100%
+      );
+  }
+
+  .hero::after {
+    opacity: calc(0.2 + var(--hero-dim));
+  }
+
+  .inner {
+    justify-self: center;
+    width: min(700px, 100%);
+    margin-right: 0;
+  }
+
+  .logoMark {
+    width: clamp(250px, 54vw, 520px);
+  }
+
+  .reserveLink {
+    right: 28px;
+    top: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 40px 18px;
+  }
+
+  .hero::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 4, 3, 0.18) 0%,
+        rgba(5, 4, 3, 0.08) 48%,
+        rgba(5, 4, 3, 0.28) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(5, 4, 3, 0.28) 0%,
+        rgba(5, 4, 3, 0.06) 42%,
+        rgba(5, 4, 3, 0.42) 100%
+      );
+  }
+
+  .hero::after {
+    opacity: calc(0.18 + var(--hero-dim));
+  }
+
+  .liquidCanvas {
+    inset: -4vh -5vw;
+  }
+
+  .inner {
+    width: min(410px, 100%);
+    transform: translate3d(0, calc(-2.4vh + var(--hero-text-y)), 0);
+  }
+
+  .eyebrow {
+    margin-bottom: 21px;
+    font-size: 0.54rem;
+    letter-spacing: 0.16em;
+    animation-delay: 620ms;
+  }
+
+  .logo {
+    animation-delay: 760ms;
+  }
+
+  .logoMark {
+    width: clamp(235px, 74vw, 390px);
+  }
+
+  .logoImage {
+    animation-delay: 840ms;
+  }
+
+  .logoMark::after {
+    animation-delay: 840ms;
+  }
+
+  .copy {
+    margin-top: 34px;
+    font-size: clamp(1.24rem, 5.9vw, 1.84rem);
+    letter-spacing: 0.034em;
+    animation-delay: 1800ms;
+  }
+
+  .lead {
+    width: min(370px, 100%);
+    margin-top: 22px;
+    font-size: 0.76rem;
+    line-height: 2;
+    letter-spacing: 0.03em;
+    animation-delay: 1960ms;
+  }
+
+  .openMeta {
+    margin-top: 30px;
+    padding-top: 18px;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    animation-delay: 2120ms;
+  }
+
+  .openMeta::before {
+    width: 60px;
+  }
+
+  .reserveLink {
+    top: 22px;
+    right: 20px;
+    font-size: 0.66rem;
+    animation-delay: 2300ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow,
+  .logo,
+  .copy,
+  .lead,
+  .openMeta,
+  .reserveLink {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+
+  .logoImage {
+    clip-path: inset(0 0 0 0);
+    animation: none;
+  }
+
+  .logoMark::after {
+    display: none;
+  }
+
+  .inner {
+    opacity: 1;
+    transform: translate3d(0, -6.8vh, 0);
+  }
+}
