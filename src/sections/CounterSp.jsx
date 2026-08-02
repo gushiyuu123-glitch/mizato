@@ -1,10 +1,17 @@
-import { useEffect, useRef } from "react";
+// src/sections/Counter.jsx
+
+import { useEffect, useLayoutEffect, useRef } from "react";
+import { setupCounterReveal } from "../effects/setupCounterReveal.js";
 import styles from "./CounterSp.module.css";
 
 export default function CounterSp() {
   const counterRef = useRef(null);
   const videoRef = useRef(null);
   const hasPlayedRef = useRef(false);
+
+  useLayoutEffect(() => {
+    return setupCounterReveal(counterRef.current);
+  }, []);
 
   useEffect(() => {
     const counter = counterRef.current;
@@ -38,13 +45,20 @@ export default function CounterSp() {
 
       hasPlayedRef.current = true;
       revealMedia();
+
       video.currentTime = 0;
 
       const playPromise = video.play();
 
-      playPromise?.catch?.(() => {
-        video.pause();
-      });
+      if (playPromise?.catch) {
+        playPromise.catch(() => {
+          /*
+            自動再生が止められた場合も、
+            静止画として映像の先頭フレームは残す。
+          */
+          video.pause();
+        });
+      }
     };
 
     const observer = new IntersectionObserver(
@@ -57,7 +71,7 @@ export default function CounterSp() {
         observer.disconnect();
       },
       {
-        threshold: 0.18,
+        threshold: 0.28,
         rootMargin: "0px 0px -8% 0px",
       }
     );
@@ -75,8 +89,7 @@ export default function CounterSp() {
     <section
       ref={counterRef}
       className={styles.counter}
-      id="counter"
-      data-sp-scene="counter"
+      id="countersp"
       aria-labelledby="counter-title"
       aria-describedby="counter-description"
     >
@@ -94,34 +107,29 @@ export default function CounterSp() {
 
         <span className={styles.mediaVeil} aria-hidden="true" />
 
-        <h2
-          id="counter-title"
-          className={styles.axisHeading}
-          data-sp-reveal
-        >
-          <span className={styles.srOnly}>At the Counter</span>
-
-          <img
-            className={styles.axisImage}
-            src="/images/at-the-counter.svg"
-            alt=""
-            aria-hidden="true"
-            draggable="false"
-          />
-        </h2>
-
-        <p
-          id="counter-description"
-          className={styles.caption}
-          data-sp-reveal
-        >
+        <p id="counter-description" className={styles.caption}>
           会話の間に、
           <br />
           グラスの音だけが残る。
         </p>
-
-        <span className={styles.counterLine} aria-hidden="true" />
       </div>
+
+      <h2 id="counter-title" className={styles.axisHeading}>
+        <span className={styles.srOnly}>At the Counter</span>
+
+        <span
+          className={styles.axisReveal}
+          data-counter-axis
+          aria-hidden="true"
+        >
+          <img
+            className={styles.axisImage}
+            src="/images/at-the-counter.svg"
+            alt=""
+            draggable="false"
+          />
+        </span>
+      </h2>
     </section>
   );
 }

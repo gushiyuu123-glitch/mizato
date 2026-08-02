@@ -1,60 +1,78 @@
+import { useLayoutEffect, useRef } from "react";
+import { setupConceptReveal } from "../effects/setupConceptReveal.js";
 import styles from "./ConceptSp.module.css";
 
 export default function ConceptSp() {
+  const conceptRef = useRef(null);
+
+  useLayoutEffect(() => {
+    return setupConceptReveal(conceptRef.current);
+  }, []);
+
   return (
     <section
+      ref={conceptRef}
       className={styles.concept}
-      id="concept"
-      data-sp-scene="concept"
+      id="conceptsp"
       aria-labelledby="concept-title"
       aria-describedby="concept-summary"
     >
-      <header className={styles.heading} data-sp-reveal>
-        <h2 id="concept-title" className={styles.axisHeading}>
-          <span className={styles.srOnly}>Take a Seat</span>
+      <h2 id="concept-title" className={styles.axisHeading}>
+        <span className={styles.srOnly}>Take a Seat</span>
 
+        <span className={styles.axisReveal} aria-hidden="true">
           <img
+            data-concept-axis
             className={styles.axisImage}
             src="/images/take-a-seat.svg"
             alt=""
-            aria-hidden="true"
             draggable="false"
           />
-        </h2>
+        </span>
+      </h2>
 
-        <p className={styles.kicker}>那覇の音が、少し遠くなる。</p>
-      </header>
+      <span
+        className={styles.dividerLine}
+        data-concept-divider
+        aria-hidden="true"
+      />
 
-      <figure className={styles.visual} data-sp-reveal>
-        <img
-          className={styles.visualImage}
-          src="/images/hero-counter.jpeg"
-          alt="MIZATOの静かなカウンター"
-          loading="lazy"
-          decoding="async"
-          draggable="false"
-        />
-        <span className={styles.visualShade} aria-hidden="true" />
-      </figure>
+      <div className={styles.copyBlock} data-concept-copy>
+        <p className={styles.kicker}>A quieter side of Naha</p>
 
-      <div className={styles.copyBlock} data-sp-reveal>
-        <p className={styles.statement}>
-          席に着くまで、
+        <h3 className={styles.copyTitle}>
+          After the noise,
           <br />
-          夜は少しずつ静かになる。
-        </p>
+          a quieter night.
+        </h3>
 
         <div id="concept-summary" className={styles.copyLines}>
-          <p>
-            那覇・松山の喧騒から、
-            <br />
-            ほんの少し離れた場所。
+          <p
+            className={`${styles.copyLine} ${styles.line01}`}
+            data-concept-copy-line
+          >
+            那覇・松山の喧騒から、少し離れた場所。
           </p>
 
-          <p>
-            一人で過ごす夜にも、
-            <br />
-            誰かと話したい夜にも。
+          <p
+            className={`${styles.copyLine} ${styles.line02}`}
+            data-concept-copy-line
+          >
+            泡盛、ウイスキー、カクテルを、
+          </p>
+
+          <p
+            className={`${styles.copyLine} ${styles.line03}`}
+            data-concept-copy-line
+          >
+            落ち着いたカウンターで楽しめます。
+          </p>
+
+          <p
+            className={`${styles.copyLine} ${styles.line04}`}
+            data-concept-copy-line
+          >
+            一人でも、会話を楽しむ夜にも。
           </p>
         </div>
       </div>
