@@ -1,1 +1,516 @@
-/* SP styles */
+/* src/sections/InformationSp.module.css */
+
+.information {
+  position: relative;
+  min-height: 118svh;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 24% 48%,
+      rgba(126, 70, 34, 0.07),
+      transparent 34rem
+    ),
+    radial-gradient(
+      circle at 76% 48%,
+      rgba(119, 63, 28, 0.045),
+      transparent 30rem
+    ),
+    linear-gradient(
+      180deg,
+      #050403 0%,
+      #080604 48%,
+      #050403 100%
+    );
+  color: rgba(243, 234, 216, 0.9);
+}
+
+.information::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0.34) 0%,
+      transparent 24%,
+      transparent 74%,
+      rgba(5, 4, 3, 0.4) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.22) 0%,
+      transparent 24%,
+      transparent 72%,
+      rgba(5, 4, 3, 0.28) 100%
+    );
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns:
+    minmax(550px, 0.98fr)
+    1px
+    minmax(470px, 1.02fr);
+  align-items: center;
+  column-gap: clamp(46px, 5.2vw, 92px);
+  width: min(91vw, 1480px);
+  min-height: 118svh;
+  margin: 0 auto;
+  padding: 12svh 0;
+}
+
+/* 左：入口ビジュアルと見出し */
+.leftPanel {
+  position: relative;
+  min-width: 0;
+  min-height: clamp(620px, 76svh, 820px);
+}
+
+.entranceFigure {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: clamp(230px, 20vw, 330px);
+  height: clamp(520px, 72svh, 760px);
+  margin: 0;
+  overflow: hidden;
+  background: #090604;
+  transform: translateY(-50%);
+  box-shadow:
+    0 34px 84px rgba(0, 0, 0, 0.62),
+    inset 0 0 0 1px rgba(243, 234, 216, 0.045);
+  clip-path: polygon(
+    2% 0%,
+    100% 1.5%,
+    98.5% 96%,
+    92% 100%,
+    0% 98%
+  );
+  will-change: opacity, transform, clip-path;
+}
+
+.entranceImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  filter:
+    saturate(0.78)
+    contrast(1.06)
+    brightness(0.76);
+  transform: scale(1.06);
+  will-change: transform;
+}
+
+.imageShade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0.16) 0%,
+      transparent 46%,
+      rgba(5, 4, 3, 0.54) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.2) 0%,
+      transparent 25%,
+      transparent 68%,
+      rgba(5, 4, 3, 0.48) 100%
+    ),
+    radial-gradient(
+      circle at 54% 45%,
+      transparent 0%,
+      rgba(5, 4, 3, 0.08) 52%,
+      rgba(5, 4, 3, 0.36) 100%
+    );
+}
+
+/*
+  初回表示時に左右へ分かれる暗いパネル。
+  暖簾や扉が開き、入口が現れるように見せる。
+*/
+.doorPanel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  width: 50.5%;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(23, 15, 10, 0.98),
+      rgba(8, 5, 4, 0.99)
+    );
+  box-shadow: inset 0 0 38px rgba(0, 0, 0, 0.62);
+  will-change: transform;
+}
+
+.doorPanelLeft {
+  left: 0;
+  transform-origin: left center;
+}
+
+.doorPanelRight {
+  right: 0;
+  transform-origin: right center;
+}
+
+.intro {
+  position: absolute;
+  top: 50%;
+  left: clamp(182px, 14vw, 252px);
+  z-index: 4;
+  width: min(430px, calc(100% - 170px));
+  transform: translateY(-50%);
+  will-change: opacity, transform, filter;
+}
+
+.title {
+  margin: 0;
+  color: rgba(241, 231, 222, 0.9);
+  font-family:
+    "Cormorant Garamond",
+    "Times New Roman",
+    serif;
+  font-size: clamp(4rem, 6.7vw, 8.1rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  text-shadow:
+    0 0 12px rgba(255, 230, 204, 0.03),
+    0 24px 54px rgba(0, 0, 0, 0.72);
+  will-change: opacity, transform, filter;
+}
+
+.introCopy {
+  margin: clamp(42px, 4.4vw, 66px) 0 0;
+  padding-left: clamp(0px, 3.2vw, 52px);
+  color: rgba(243, 234, 216, 0.52);
+  font-family:
+    "Noto Serif JP",
+    "Yu Mincho",
+    serif;
+  font-size: clamp(0.74rem, 0.86vw, 0.9rem);
+  font-weight: 300;
+  line-height: 2.05;
+  letter-spacing: 0.065em;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.72);
+}
+
+/* 中央線 */
+.divider {
+  align-self: center;
+  width: 1px;
+  min-height: 70svh;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(193, 140, 88, 0.1) 12%,
+      rgba(243, 234, 216, 0.12) 48%,
+      rgba(193, 140, 88, 0.1) 86%,
+      transparent 100%
+    );
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  will-change: opacity, clip-path;
+}
+
+/* 右：店舗情報 */
+.list {
+  margin: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns:
+    minmax(132px, 0.68fr)
+    minmax(250px, 1.32fr);
+  align-items: center;
+  column-gap: clamp(32px, 3.5vw, 62px);
+  min-height: clamp(98px, 11.4svh, 124px);
+  padding: clamp(21px, 2.4vw, 34px) 0;
+  border-bottom: 1px solid rgba(243, 234, 216, 0.065);
+  opacity: 0;
+  transform: translateY(18px);
+  will-change: opacity, transform, filter;
+}
+
+.item:first-child {
+  border-top: 1px solid rgba(243, 234, 216, 0.065);
+}
+
+.label {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.34em;
+  min-width: 0;
+  line-height: 1.4;
+}
+
+.labelEnglish {
+  color: rgba(193, 140, 88, 0.7);
+  font-family: "Times New Roman", serif;
+  font-size: clamp(0.6rem, 0.7vw, 0.75rem);
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.labelJapanese {
+  color: rgba(193, 140, 88, 0.43);
+  font-family:
+    "Noto Serif JP",
+    "Yu Mincho",
+    serif;
+  font-size: clamp(0.54rem, 0.62vw, 0.67rem);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.value {
+  margin: 0;
+  color: rgba(243, 234, 216, 0.78);
+  font-family:
+    "Cormorant Garamond",
+    "Noto Serif JP",
+    "Yu Mincho",
+    serif;
+  font-size: clamp(1.28rem, 1.85vw, 2.08rem);
+  font-weight: 300;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  text-shadow: 0 14px 34px rgba(0, 0, 0, 0.52);
+}
+
+/* Narrow PC / Tablet */
+@media (max-width: 1220px) {
+  .inner {
+    grid-template-columns:
+      minmax(455px, 0.94fr)
+      1px
+      minmax(390px, 1.06fr);
+    column-gap: clamp(30px, 3.8vw, 56px);
+    width: min(92vw, 1100px);
+  }
+
+  .leftPanel {
+    min-height: clamp(560px, 70svh, 720px);
+  }
+
+  .entranceFigure {
+    width: clamp(205px, 20vw, 270px);
+    height: clamp(480px, 65svh, 650px);
+  }
+
+  .intro {
+    left: clamp(154px, 14vw, 205px);
+    width: min(370px, calc(100% - 142px));
+  }
+
+  .title {
+    font-size: clamp(3.4rem, 6.6vw, 6.6rem);
+  }
+
+  .item {
+    grid-template-columns:
+      minmax(112px, 0.62fr)
+      minmax(210px, 1.38fr);
+    column-gap: 28px;
+  }
+
+  .value {
+    font-size: clamp(1.12rem, 2vw, 1.72rem);
+  }
+}
+
+@media (max-width: 900px) and (min-width: 768px) {
+  .inner {
+    grid-template-columns:
+      minmax(330px, 0.82fr)
+      1px
+      minmax(330px, 1.18fr);
+    column-gap: 26px;
+    width: min(94vw, 830px);
+  }
+
+  .entranceFigure {
+    width: 205px;
+    height: 540px;
+    opacity: 0.76;
+  }
+
+  .intro {
+    left: 112px;
+    width: 260px;
+  }
+
+  .title {
+    font-size: clamp(3rem, 7.2vw, 4.8rem);
+  }
+
+  .introCopy {
+    padding-left: 24px;
+    font-size: 0.7rem;
+  }
+
+  .item {
+    grid-template-columns: 92px 1fr;
+    column-gap: 20px;
+  }
+
+  .label {
+    display: block;
+  }
+
+  .labelJapanese {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .value {
+    font-size: clamp(1rem, 2.5vw, 1.45rem);
+  }
+}
+
+/* SP */
+@media (max-width: 767px) {
+  .information {
+    min-height: auto;
+    overflow: hidden;
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: min(100% - 40px, 520px);
+    min-height: auto;
+    padding: 13svh 0 16svh;
+  }
+
+  .leftPanel {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .intro {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 1;
+    width: 100%;
+    transform: none;
+  }
+
+  .title {
+    font-size: clamp(3.65rem, 17vw, 5.8rem);
+    line-height: 0.9;
+  }
+
+  .introCopy {
+    margin-top: 30px;
+    padding-left: 0;
+    font-size: 0.74rem;
+  }
+
+  .entranceFigure {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 2;
+    width: min(76vw, 330px);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    margin: 8svh 0 0 auto;
+    transform: none;
+  }
+
+  .entranceImage {
+    object-position: 50% 48%;
+  }
+
+  .divider {
+    width: 100%;
+    min-height: 1px;
+    height: 1px;
+    margin: 8svh 0 5svh;
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(193, 140, 88, 0.2) 18%,
+        rgba(243, 234, 216, 0.12) 50%,
+        rgba(193, 140, 88, 0.16) 82%,
+        transparent
+      );
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .item {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
+    min-height: auto;
+    padding: 27px 0;
+  }
+
+  .label {
+    display: flex;
+    gap: 0.5em;
+  }
+
+  .labelEnglish {
+    font-size: 0.6rem;
+  }
+
+  .labelJapanese {
+    font-size: 0.56rem;
+  }
+
+  .value {
+    font-size: clamp(1.35rem, 6.8vw, 2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entranceFigure,
+  .intro,
+  .title,
+  .divider,
+  .item {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
+  .entranceFigure {
+    transform: translateY(-50%);
+  }
+
+  .doorPanel {
+    display: none;
+  }
+
+  .divider {
+    clip-path: inset(0);
+  }
+
+  @media (max-width: 767px) {
+    .entranceFigure {
+      transform: none;
+    }
+  }
+}
