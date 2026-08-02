@@ -1,39 +1,44 @@
-import { useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 
-import BrandHeader from "./components/BrandHeader.jsx";
+import AppPc from "./AppPc.jsx";
+import AppSp from "./AppSp.jsx";
 
-import Hero from "./sections/Hero.jsx";
-import Concept from "./sections/Concept.jsx";
-import Signature from "./sections/Signature.jsx";
-import Counter from "./sections/Counter.jsx";
-import Menu from "./sections/Menu.jsx";
-import Information from "./sections/Information.jsx";
-import Access from "./sections/Access.jsx";
+const DESKTOP_QUERY = "(min-width: 768px)";
 
-import { setupLenis } from "./effects/setupLenis.js";
+function getIsDesktop() {
+  if (typeof window === "undefined") {
+    return true;
+  }
+
+  return window.matchMedia(DESKTOP_QUERY).matches;
+}
 
 export default function App() {
-  useLayoutEffect(() => {
-    return setupLenis();
+  const [isDesktop, setIsDesktop] = useState(getIsDesktop);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(DESKTOP_QUERY);
+
+    const syncViewport = () => {
+      setIsDesktop(mediaQuery.matches);
+    };
+
+    syncViewport();
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", syncViewport);
+    } else {
+      mediaQuery.addListener?.(syncViewport);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", syncViewport);
+      } else {
+        mediaQuery.removeListener?.(syncViewport);
+      }
+    };
   }, []);
 
-  return (
-    <>
-      <a className="skipLink" href="#main-content">
-        本文へ移動
-      </a>
-
-      <BrandHeader />
-
-      <main id="main-content" tabIndex={-1}>
-        <Hero />
-        <Concept />
-        <Signature />
-        <Counter />
-        <Menu />
-        <Information />
-        <Access />
-      </main>
-    </>
-  );
+  return isDesktop ? <AppPc /> : <AppSp />;
 }
