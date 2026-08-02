@@ -56,6 +56,7 @@ export default function Menu() {
       className={styles.menu}
       id="menu"
       aria-labelledby="menu-title"
+      aria-describedby="menu-summary"
     >
       <div className={styles.intro} data-menu-intro>
         <h2 id="menu-title" className={styles.introTitle}>
@@ -70,6 +71,7 @@ export default function Menu() {
               className={styles.introTitleImage}
               src="/images/menu-title.svg"
               alt=""
+              draggable="false"
             />
           </span>
         </h2>
@@ -80,6 +82,10 @@ export default function Menu() {
 
         <p className={styles.introCopy} data-menu-intro-copy>
           一杯ずつ、夜を選ぶ。
+        </p>
+
+        <p id="menu-summary" className="sectionContext menuContext">
+          泡盛・ウイスキー・カクテルの一例です。
         </p>
       </div>
 
@@ -119,6 +125,7 @@ export default function Menu() {
               className={styles.pageSheet}
               data-menu-page
               data-page-index={categoryIndex}
+              aria-labelledby={`menu-category-${categoryIndex}`}
             >
               <div className={`${styles.pageFace} ${styles.pageFront}`}>
                 <header className={styles.pageHeader}>
@@ -126,7 +133,11 @@ export default function Menu() {
                     {category.japanese}
                   </p>
 
-                  <h3 className={styles.pageTitle} data-menu-page-title>
+                  <h3
+                    id={`menu-category-${categoryIndex}`}
+                    className={styles.pageTitle}
+                    data-menu-page-title
+                  >
                     {category.name}
                   </h3>
 
@@ -148,13 +159,16 @@ export default function Menu() {
                 </div>
 
                 <p className={styles.pageNote}>
-                  その他の銘柄もご用意しています。
+                  掲載しているメニューは一例です。
                   <br />
                   お好みをお聞かせください。
                 </p>
               </div>
 
-              <div className={`${styles.pageFace} ${styles.pageBack}`}>
+              <div
+                className={`${styles.pageFace} ${styles.pageBack}`}
+                aria-hidden="true"
+              >
                 <p className={styles.backCategory}>{category.name}</p>
                 <span className={styles.backLine} aria-hidden="true" />
                 <p className={styles.backCopy}>{category.backCopy}</p>
@@ -166,7 +180,7 @@ export default function Menu() {
         </div>
       </div>
 
-      <p className={styles.scrollHint} data-menu-hint>
+      <p className={styles.scrollHint} data-menu-hint aria-hidden="true">
         Scroll to open
       </p>
     </section>
