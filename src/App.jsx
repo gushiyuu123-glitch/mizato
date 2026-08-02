@@ -19,9 +19,13 @@ export default function App() {
 
   return (
     <>
+      <a className="skipLink" href="#main-content">
+        本文へ移動
+      </a>
+
       <BrandHeader />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <Concept />
         <Signature />
