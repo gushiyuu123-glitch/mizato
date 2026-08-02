@@ -1,115 +1,63 @@
-/* SP styles */
-/* src/components/BrandHeader.module.css */
-
 .header {
   position: fixed;
-  top: clamp(24px, 3vw, 46px);
-  left: clamp(26px, 4vw, 64px);
+  top: calc(18px + env(safe-area-inset-top));
+  left: 20px;
   z-index: 100;
-
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transform: translateY(-9px);
+  transition:
+    opacity 520ms ease,
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 620ms;
+}
 
-  will-change:
-    opacity,
-    transform,
-    filter;
+:global(
+  [data-sp-world][data-sp-ready="true"]:not([data-sp-scene="top"])
+) .header {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
 }
 
 .logoLink {
   display: block;
-  width: clamp(92px, 8.5vw, 138px);
+  width: clamp(76px, 22vw, 96px);
   padding: 8px 0;
-
-  pointer-events: auto;
-  text-decoration: none;
 }
 
 .logo {
-  display: block;
   width: 100%;
-  height: auto;
-
-  opacity: 0.62;
+  opacity: 0.68;
   filter:
     brightness(0)
     invert(91%)
     sepia(10%)
     saturate(360%)
     hue-rotate(344deg)
-    brightness(91%);
-
+    brightness(91%)
+    drop-shadow(0 8px 22px rgba(0, 0, 0, 0.62));
   transition:
-    opacity 420ms ease,
-    filter 420ms ease,
-    transform 520ms cubic-bezier(
-      0.22,
-      1,
-      0.36,
-      1
-    );
+    opacity 240ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.logoLink:hover .logo,
-.logoLink:focus-visible .logo {
-  opacity: 0.92;
-  transform: translateY(-1px);
-  filter:
-    brightness(0)
-    invert(79%)
-    sepia(28%)
-    saturate(694%)
-    hue-rotate(351deg)
-    brightness(92%);
+.logoLink:active .logo {
+  opacity: 0.94;
+  transform: scale(0.97);
 }
 
 .logoLink:focus-visible {
-  outline: 1px solid rgba(207, 153, 94, 0.4);
-  outline-offset: 7px;
-}
-
-/* 背景が明るくなった場合の保険 */
-.header::after {
-  content: "";
-  position: absolute;
-  inset: -14px -18px;
-  z-index: -1;
-
-  opacity: 0;
-  border-radius: 999px;
-  background: rgba(5, 4, 3, 0.12);
-  filter: blur(12px);
-  pointer-events: none;
-}
-
-/* SPは少し小さく */
-@media (max-width: 767px) {
-  .header {
-    top:
-      calc(
-        18px +
-        env(safe-area-inset-top)
-      );
-    left: 20px;
-  }
-
-  .logoLink {
-    width: clamp(78px, 24vw, 104px);
-  }
-
-  .logo {
-    opacity: 0.68;
-  }
+  outline: 1px solid rgba(207, 153, 94, 0.44);
+  outline-offset: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .header {
-    filter: none;
-    transform: none;
-  }
-
+  .header,
   .logo {
-    transition: opacity 200ms ease;
+    transition: none;
   }
 }
