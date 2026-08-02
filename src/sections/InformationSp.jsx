@@ -1,7 +1,3 @@
-// src/sections/InformationSp.jsx
-
-import { useLayoutEffect, useRef } from "react";
-import { setupInformationReveal } from "../effects/setupInformationReveal.js";
 import styles from "./InformationSp.module.css";
 
 const informationItems = [
@@ -38,102 +34,63 @@ const informationItems = [
 ];
 
 export default function InformationSp() {
-  const informationRef = useRef(null);
-
-  useLayoutEffect(() => {
-    return setupInformationReveal(informationRef.current);
-  }, []);
-
   return (
     <section
-      ref={informationRef}
       className={styles.information}
       id="information"
+      data-sp-scene="information"
       aria-labelledby="information-title"
       aria-describedby="information-summary"
     >
-      <div className={styles.inner}>
-        <div className={styles.leftPanel}>
-          <figure
-            className={styles.entranceFigure}
-            data-information-visual
-          >
-            <img
-              className={styles.entranceImage}
-              src="/images/information-entrance.png"
-              alt="暖簾の奥に見えるMIZATOのカウンター"
-              loading="lazy"
-              decoding="async"
-              draggable="false"
-              data-information-image
-            />
+      <div className={styles.visual} data-sp-reveal>
+        <img
+          className={styles.entranceImage}
+          src="/images/information-entrance.png"
+          alt="暖簾の奥に見えるMIZATOのカウンター"
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
 
-            <span
-              className={styles.imageShade}
-              aria-hidden="true"
-            />
-
-            <span
-              className={`${styles.doorPanel} ${styles.doorPanelLeft}`}
-              data-information-door-left
-              aria-hidden="true"
-            />
-
-            <span
-              className={`${styles.doorPanel} ${styles.doorPanelRight}`}
-              data-information-door-right
-              aria-hidden="true"
-            />
-          </figure>
-
-          <header
-            className={styles.intro}
-            data-information-intro
-          >
-            <h2
-              id="information-title"
-              className={styles.title}
-              data-information-title
-            >
-              Information
-            </h2>
-
-            <p id="information-summary" className={styles.introCopy}>
-              ご来店の前に。
-              <br />
-              営業時間やお席、チャージについてご案内します。
-            </p>
-          </header>
-        </div>
-
+        <span className={styles.imageShade} aria-hidden="true" />
         <span
-          className={styles.divider}
-          data-information-divider
+          className={`${styles.doorPanel} ${styles.doorPanelLeft}`}
+          aria-hidden="true"
+        />
+        <span
+          className={`${styles.doorPanel} ${styles.doorPanelRight}`}
           aria-hidden="true"
         />
 
-        <dl className={styles.list}>
-          {informationItems.map((item) => (
-            <div
-              key={item.labelEn}
-              className={styles.item}
-              data-information-item
-            >
-              <dt className={styles.label}>
-                <span className={styles.labelEnglish} aria-hidden="true">
-                  {item.labelEn}
-                </span>
+        <header className={styles.intro}>
+          <p className={styles.englishTitle}>Information</p>
 
-                <span className={styles.labelJapanese}>
-                  {item.labelJa}
-                </span>
-              </dt>
+          <h2 id="information-title" className={styles.title}>
+            ご来店の前に。
+          </h2>
 
-              <dd className={styles.value}>{item.value}</dd>
-            </div>
-          ))}
-        </dl>
+          <p id="information-summary" className={styles.introCopy}>
+            営業時間やお席、チャージについて
+            <br />
+            ご案内します。
+          </p>
+        </header>
       </div>
+
+      <dl className={styles.list} data-sp-reveal>
+        {informationItems.map((item) => (
+          <div key={item.labelEn} className={styles.item}>
+            <dt className={styles.label}>
+              <span className={styles.labelJapanese}>{item.labelJa}</span>
+              <span className={styles.labelEnglish} aria-hidden="true">
+                {item.labelEn}
+              </span>
+            </dt>
+
+            <dd className={styles.value}>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }
