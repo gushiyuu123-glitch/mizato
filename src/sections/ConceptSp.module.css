@@ -1,18 +1,19 @@
-/* SP styles */
 .concept {
   position: relative;
-  min-height: 138svh;
-  padding: 11svh 0 48svh;
+  min-height: 122svh;
   overflow: hidden;
   isolation: isolate;
-  background: #050403;
-  color: rgba(243, 234, 216, 0.9);
-
-  --axis-trace-y: 110%;
-  --axis-trace-opacity: 0;
+  padding: 13svh 0 18svh;
+  background:
+    radial-gradient(
+      circle at 18% 35%,
+      rgba(156, 87, 43, 0.09),
+      transparent 24rem
+    ),
+    linear-gradient(180deg, #050403 0%, #090604 68%, #050403 100%);
+  color: rgba(243, 234, 216, 0.92);
 }
 
-/* Heroから黒へ自然に沈ませる */
 .concept::before {
   content: "";
   position: absolute;
@@ -20,216 +21,163 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 31% 48%,
-      rgba(185, 120, 60, 0.05),
-      transparent 33rem
-    ),
-    radial-gradient(
-      circle at 76% 68%,
-      rgba(214, 149, 80, 0.024),
-      transparent 27rem
-    ),
     linear-gradient(
-      180deg,
-      rgba(5, 4, 3, 0.02) 0%,
-      rgba(5, 4, 3, 0) 38%,
-      rgba(5, 4, 3, 0.2) 100%
+      90deg,
+      rgba(0, 0, 0, 0.18) 0%,
+      transparent 24%,
+      transparent 82%,
+      rgba(0, 0, 0, 0.2) 100%
     );
-  opacity: 0.92;
 }
 
-/* 左の縦タイポ */
+.heading {
+  position: relative;
+  z-index: 3;
+  min-height: 18svh;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 850ms ease,
+    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:global([data-sp-visible="true"]).heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .axisHeading {
   position: absolute;
-  left: clamp(118px, 15.5vw, 252px);
-  top: 56%;
-  z-index: 2;
+  top: 0;
+  left: 20px;
+  width: clamp(52px, 14vw, 68px);
+  height: clamp(330px, 52svh, 470px);
   margin: 0;
-  line-height: 1;
-  transform: translateY(-50%);
+  z-index: 4;
   pointer-events: none;
-}
-
-.axisReveal {
-  position: relative;
-  display: block;
-  width: clamp(96px, 8vw, 148px);
-  height: clamp(580px, 80vh, 860px);
-  overflow: hidden;
-}
-
-.axisReveal::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  opacity: var(--axis-trace-opacity);
-  transform: translateY(var(--axis-trace-y));
-  background:
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(246, 190, 118, 0.02) 18%,
-      rgba(246, 190, 118, 0.34) 46%,
-      rgba(243, 234, 216, 0.18) 52%,
-      rgba(246, 190, 118, 0.04) 76%,
-      transparent 100%
-    );
-  -webkit-mask-image: url("/images/take-a-seat.svg");
-  mask-image: url("/images/take-a-seat.svg");
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  mix-blend-mode: screen;
-  will-change: opacity, transform;
 }
 
 .axisImage {
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  opacity: 0.68;
+  opacity: 0.72;
   filter:
-    drop-shadow(0 0 10px rgba(185, 120, 60, 0.1))
-    drop-shadow(0 18px 44px rgba(0, 0, 0, 0.84));
-  will-change: clip-path, opacity;
-}
-
-/* 中央の細い軸線 */
-.dividerLine {
-  position: absolute;
-  left: 41.8%;
-  top: 53%;
-  z-index: 2;
-  width: 1px;
-  height: clamp(360px, 52vh, 610px);
-  transform: translateY(-50%);
-  pointer-events: none;
-  opacity: 0;
-  clip-path: inset(0% 0% 100% 0%);
-  background:
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(185, 120, 60, 0.08) 8%,
-      rgba(185, 120, 60, 0.3) 28%,
-      rgba(243, 234, 216, 0.16) 50%,
-      rgba(185, 120, 60, 0.2) 72%,
-      transparent 100%
-    );
-  box-shadow:
-    0 0 18px rgba(185, 120, 60, 0.07),
-    0 18px 44px rgba(0, 0, 0, 0.72);
-  will-change: clip-path, opacity;
-}
-
-/* 右コピー */
-.copyBlock {
-  position: absolute;
-  right: clamp(165px, 15.5vw, 292px);
-  top: 51.5%;
-  z-index: 3;
-  width: min(34vw, 540px);
-  transform: translateY(-50%);
-  pointer-events: none;
-  text-align: right;
-  will-change: opacity, transform, filter;
-}
-
-.copyBlock::before {
-  content: "";
-  position: absolute;
-  top: -118px;
-  right: -88px;
-  z-index: -1;
-  width: clamp(220px, 22vw, 380px);
-  height: clamp(260px, 28vw, 460px);
-  pointer-events: none;
-  background:
-    radial-gradient(
-      circle at 52% 34%,
-      rgba(160, 87, 34, 0.15),
-      rgba(160, 87, 34, 0.055) 32%,
-      rgba(160, 87, 34, 0.018) 52%,
-      transparent 76%
-    );
-  filter: blur(34px);
-  opacity: 0.38;
+    drop-shadow(0 0 12px rgba(193, 138, 74, 0.1))
+    drop-shadow(0 18px 36px rgba(0, 0, 0, 0.66));
 }
 
 .kicker {
-  margin: 0 0 22px;
-  color: rgba(193, 140, 88, 0.64);
-  font-family: "Times New Roman", "Yu Mincho", serif;
-  font-size: clamp(0.62rem, 0.68vw, 0.74rem);
-  line-height: 1.4;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  margin: 5svh 20px 0 auto;
+  width: min(65vw, 280px);
+  color: rgba(193, 140, 88, 0.66);
+  font-size: 0.66rem;
+  line-height: 1.8;
+  letter-spacing: 0.045em;
+  text-align: right;
 }
 
-.copyTitle {
-  margin: 0;
-  font-family: "Cormorant Garamond", "Times New Roman", serif;
-  font-size: clamp(40px, 3.95vw, 70px);
-  font-style: italic;
+.visual {
+  position: relative;
+  z-index: 1;
+  width: calc(100% - 72px);
+  height: min(64svh, 620px);
+  margin: -2svh 0 0 auto;
+  overflow: hidden;
+  clip-path: polygon(7% 0%, 100% 2%, 100% 96%, 92% 100%, 0 98%);
+  opacity: 0;
+  transform: translateY(34px) scale(0.985);
+  transition:
+    opacity 950ms ease 120ms,
+    transform 1100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+:global([data-sp-visible="true"]).visual {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.visualImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 48% center;
+  filter:
+    saturate(0.72)
+    contrast(1.08)
+    brightness(0.66);
+  transform: scale(1.055);
+}
+
+.visualShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.12) 0%,
+      transparent 34%,
+      rgba(5, 4, 3, 0.45) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0.18) 0%,
+      transparent 44%,
+      rgba(5, 4, 3, 0.18) 100%
+    );
+}
+
+.copyBlock {
+  position: relative;
+  z-index: 3;
+  width: calc(100% - 40px);
+  margin: -6svh auto 0;
+  padding: 34px 24px 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 6, 4, 0) 0%,
+      rgba(8, 6, 4, 0.76) 22%,
+      rgba(8, 6, 4, 0.94) 100%
+    );
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 850ms ease 220ms,
+    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 220ms;
+}
+
+:global([data-sp-visible="true"]).copyBlock {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.statement {
+  font-family: var(--font-serif-jp);
+  font-size: clamp(1.38rem, 6.4vw, 1.82rem);
   font-weight: 300;
-  line-height: 0.99;
-  letter-spacing: -0.018em;
-  color: rgba(241, 231, 222, 0.8);
-  text-align: right;
-  text-shadow:
-    0 0 10px rgba(255, 230, 204, 0.03),
-    0 20px 44px rgba(0, 0, 0, 0.62);
+  line-height: 1.72;
+  letter-spacing: 0.015em;
+  color: rgba(243, 234, 216, 0.91);
+  text-shadow: 0 16px 36px rgba(0, 0, 0, 0.66);
 }
 
 .copyLines {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-top: clamp(52px, 5.2vw, 78px);
-}
-
-.copyLine {
-  width: fit-content;
-  margin: 0;
-  font-family: "Noto Serif JP", "Yu Mincho", serif;
-  font-size: clamp(13px, 0.98vw, 17px);
+  display: grid;
+  gap: 32px;
+  margin-top: 42px;
+  padding-left: 18vw;
+  color: rgba(243, 234, 216, 0.6);
+  font-size: 0.78rem;
   font-weight: 300;
-  line-height: 1.95;
-  letter-spacing: 0.055em;
-  color: rgba(240, 232, 224, 0.74);
-  text-align: right;
-  text-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  line-height: 2.08;
+  letter-spacing: 0.025em;
 }
 
-.line01 {
-  margin-top: 0;
-}
-
-.line02 {
-  margin-top: 34px;
-}
-
-.line03 {
-  margin-top: 36px;
-}
-
-.line04 {
-  margin-top: 76px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(193, 140, 88, 0.18);
-  font-size: clamp(14px, 1.02vw, 18px);
-  letter-spacing: 0.045em;
-  color: rgba(202, 148, 93, 0.8);
-  text-shadow:
-    0 0 10px rgba(193, 140, 88, 0.05),
-    0 14px 34px rgba(0, 0, 0, 0.64);
+.copyLines p:last-child {
+  padding-top: 26px;
+  border-top: 1px solid rgba(193, 138, 74, 0.16);
+  color: rgba(209, 157, 102, 0.72);
 }
 
 .srOnly {
@@ -244,202 +192,22 @@
   border: 0;
 }
 
-/* Tablet */
-@media (max-width: 1100px) {
-  .axisHeading {
-    left: clamp(86px, 12.5vw, 154px);
-  }
-
-  .axisReveal {
-    width: clamp(80px, 7.8vw, 112px);
-    height: clamp(500px, 72vh, 720px);
-  }
-
-  .dividerLine {
-    left: 44.5%;
-    height: clamp(320px, 48vh, 540px);
-  }
-
-  .copyBlock {
-    right: clamp(70px, 7.5vw, 132px);
-    width: min(37vw, 440px);
-  }
-
-  .copyTitle {
-    font-size: clamp(37px, 4.35vw, 64px);
-  }
-
-  .copyLine {
-    font-size: clamp(13px, 1.18vw, 16px);
-  }
-
-  .line02 {
-    margin-top: 30px;
-  }
-
-  .line03 {
-    margin-top: 32px;
-  }
-
-  .line04 {
-    margin-top: 62px;
-  }
-}
-
-/* Small Tablet */
-@media (max-width: 900px) {
-  .axisHeading {
-    left: clamp(50px, 9vw, 86px);
-    top: 56%;
-  }
-
-  .axisReveal {
-    width: clamp(68px, 7.8vw, 92px);
-    height: clamp(440px, 66vh, 620px);
-  }
-
-  .dividerLine {
-    left: 47%;
-    height: clamp(280px, 42vh, 460px);
-    opacity: 0.72;
-  }
-
-  .copyBlock {
-    right: clamp(38px, 5.5vw, 78px);
-    top: 52%;
-    width: min(42vw, 350px);
-  }
-
-  .kicker {
-    margin-bottom: 18px;
-    font-size: 0.58rem;
-  }
-
-  .copyTitle {
-    font-size: clamp(33px, 4.65vw, 52px);
-    line-height: 1;
-  }
-
-  .copyLines {
-    margin-top: 38px;
-  }
-
-  .copyLine {
-    font-size: clamp(12px, 1.55vw, 15px);
-    line-height: 1.88;
-    letter-spacing: 0.045em;
-  }
-
-  .line02 {
-    margin-top: 22px;
-  }
-
-  .line03 {
-    margin-top: 24px;
-  }
-
-  .line04 {
-    margin-top: 46px;
-    padding-top: 18px;
-  }
-}
-
-/* SP */
-@media (max-width: 640px) {
+@media (max-height: 690px) {
   .concept {
-    min-height: 108svh;
-    padding: 10svh 0 18svh;
+    min-height: 132svh;
   }
 
-  .axisHeading {
-    left: 28px;
-    top: 48%;
-  }
-
-  .axisReveal {
-    width: clamp(52px, 13.5vw, 70px);
-    height: clamp(340px, 58vh, 500px);
-  }
-
-  .axisImage {
-    opacity: 0.42;
-  }
-
-  .dividerLine {
-    left: 33%;
-    top: 52%;
-    height: clamp(220px, 36vh, 360px);
-    opacity: 0.46;
-  }
-
-  .copyBlock {
-    right: 20px;
-    top: 54%;
-    width: min(59vw, 284px);
-  }
-
-  .copyBlock::before {
-    top: -88px;
-    right: -48px;
-    width: 238px;
-    height: 296px;
-    opacity: 0.32;
-  }
-
-  .kicker {
-    margin-bottom: 15px;
-    font-size: 0.52rem;
-    letter-spacing: 0.13em;
-  }
-
-  .copyTitle {
-    font-size: clamp(29px, 8.2vw, 46px);
-    line-height: 1;
-    letter-spacing: -0.014em;
-  }
-
-  .copyLines {
-    margin-top: 31px;
-  }
-
-  .copyLine {
-    font-size: 12px;
-    line-height: 1.92;
-    letter-spacing: 0.032em;
-  }
-
-  .line02 {
-    margin-top: 18px;
-  }
-
-  .line03 {
-    margin-top: 20px;
-  }
-
-  .line04 {
-    margin-top: 38px;
-    padding-top: 16px;
-    font-size: 12.5px;
+  .visual {
+    height: 68svh;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .axisImage {
-    clip-path: inset(0 0 0 0);
-  }
-
-  .axisReveal::after {
-    display: none;
-  }
-
-  .dividerLine {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-  }
-
+  .heading,
+  .visual,
   .copyBlock {
     opacity: 1;
-    filter: none;
-    transform: translateY(-50%);
+    transform: none;
+    transition: none;
   }
 }
