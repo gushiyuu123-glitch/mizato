@@ -15,6 +15,7 @@ export default function Concept() {
       className={styles.concept}
       id="concept"
       aria-labelledby="concept-title"
+      aria-describedby="concept-summary"
     >
       <h2 id="concept-title" className={styles.axisHeading}>
         <span className={styles.srOnly}>Take a Seat</span>
@@ -25,6 +26,7 @@ export default function Concept() {
             className={styles.axisImage}
             src="/images/take-a-seat.svg"
             alt=""
+            draggable="false"
           />
         </span>
       </h2>
@@ -44,33 +46,33 @@ export default function Concept() {
           a quieter night.
         </h3>
 
-        <div className={styles.copyLines}>
+        <div id="concept-summary" className={styles.copyLines}>
           <p
             className={`${styles.copyLine} ${styles.line01}`}
             data-concept-copy-line
           >
-            扉の向こうは、音のない世界。
+            那覇・松山の喧騒から、少し離れた場所。
           </p>
 
           <p
             className={`${styles.copyLine} ${styles.line02}`}
             data-concept-copy-line
           >
-            グラスを傾けるたび、
+            泡盛、ウイスキー、カクテルを、
           </p>
 
           <p
             className={`${styles.copyLine} ${styles.line03}`}
             data-concept-copy-line
           >
-            時間の輪郭がほどけていく。
+            落ち着いたカウンターで楽しめます。
           </p>
 
           <p
             className={`${styles.copyLine} ${styles.line04}`}
             data-concept-copy-line
           >
-            ここは、大人のための隠れ家バー。
+            一人でも、会話を楽しむ夜にも。
           </p>
         </div>
       </div>
