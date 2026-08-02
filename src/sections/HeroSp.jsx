@@ -20,7 +20,7 @@ export default function HeroSp() {
     >
       <HeroLiquidCanvas
         className={styles.liquidCanvas}
-        image="/images/hero-counter.jpeg"
+        image="/images/hero-counter-sp.webp"
       />
 
       <a
