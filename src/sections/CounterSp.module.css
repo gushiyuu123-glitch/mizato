@@ -1,240 +1,128 @@
-/* SP styles */
-/* src/sections/Counter.module.css */
-
 .counter {
   position: relative;
-  min-height: 116svh;
+  min-height: 155svh;
+  background: #050403;
+}
+
+.mediaStage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   overflow: hidden;
   isolation: isolate;
   background: #050403;
-  color: rgba(243, 234, 216, 0.9);
-
-  --axis-trace-y: -115%;
-  --axis-trace-opacity: 0;
-}
-
-.counter::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      circle at 16% 46%,
-      rgba(185, 120, 60, 0.05),
-      transparent 34rem
-    ),
-    radial-gradient(
-      circle at 54% 58%,
-      rgba(110, 59, 26, 0.026),
-      transparent 30rem
-    ),
-    linear-gradient(
-      90deg,
-      rgba(5, 4, 3, 0.04) 0%,
-      rgba(5, 4, 3, 0.1) 54%,
-      rgba(5, 4, 3, 0.88) 100%
-    );
-}
-
-.counter::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(5, 4, 3, 0.38) 0%,
-      transparent 17%,
-      transparent 80%,
-      rgba(5, 4, 3, 0.48) 100%
-    ),
-    linear-gradient(
-      90deg,
-      transparent 0%,
-      transparent 58%,
-      rgba(5, 4, 3, 0.16) 72%,
-      rgba(5, 4, 3, 0.82) 94%,
-      #050403 100%
-    );
-}
-
-/* 左の横ワイド映像 */
-.mediaStage {
-  position: absolute;
-  left: clamp(24px, 3.8vw, 72px);
-  top: 50%;
-  z-index: 1;
-  width: min(76vw, 1320px);
-  height: min(70svh, 760px);
-  overflow: hidden;
-  opacity: 0;
-  filter: blur(7px);
-  transform: translate3d(0, -48%, 0) scale(0.985);
-  transform-origin: center left;
-  box-shadow:
-    0 38px 100px rgba(0, 0, 0, 0.54),
-    inset 0 0 0 1px rgba(243, 234, 216, 0.035);
-  -webkit-mask-image:
-    linear-gradient(
-      90deg,
-      #000 0%,
-      #000 72%,
-      rgba(0, 0, 0, 0.86) 82%,
-      transparent 100%
-    );
-  mask-image:
-    linear-gradient(
-      90deg,
-      #000 0%,
-      #000 72%,
-      rgba(0, 0, 0, 0.86) 82%,
-      transparent 100%
-    );
-  will-change: opacity, filter, transform;
-}
-
-.isMediaVisible .mediaStage {
-  opacity: 1;
-  filter: blur(0);
-  transform: translate3d(0, -50%, 0) scale(1);
-  transition:
-    opacity 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .counterVideo {
   position: absolute;
   inset: 0;
-  display: block;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 48% 50%;
-  background: #080604;
+  object-position: 50% center;
+  opacity: 0;
   filter:
-    saturate(0.82)
-    contrast(1.06)
-    brightness(0.74);
+    saturate(0.68)
+    contrast(1.08)
+    brightness(0.54);
+  transform: scale(1.065);
+  transition:
+    opacity 1200ms ease,
+    transform 2600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.isMediaVisible .counterVideo {
+  opacity: 1;
   transform: scale(1.015);
 }
 
 .mediaVeil {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 38% 48%,
-      transparent 0%,
-      rgba(5, 4, 3, 0.04) 42%,
-      rgba(5, 4, 3, 0.32) 100%
-    ),
     linear-gradient(
       180deg,
-      rgba(5, 4, 3, 0.08) 0%,
-      transparent 28%,
-      transparent 68%,
-      rgba(5, 4, 3, 0.34) 100%
+      rgba(5, 4, 3, 0.46) 0%,
+      rgba(5, 4, 3, 0.08) 32%,
+      rgba(5, 4, 3, 0.12) 58%,
+      rgba(5, 4, 3, 0.72) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0.28) 0%,
+      transparent 42%,
+      rgba(5, 4, 3, 0.26) 100%
     );
+}
+
+.axisHeading {
+  position: absolute;
+  top: 10svh;
+  right: 18px;
+  z-index: 2;
+  width: clamp(54px, 15vw, 72px);
+  height: 66svh;
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 900ms ease,
+    transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:global([data-sp-visible="true"]).axisHeading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.axisImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.72;
+  filter:
+    drop-shadow(0 0 12px rgba(199, 143, 82, 0.08))
+    drop-shadow(0 18px 36px rgba(0, 0, 0, 0.64));
 }
 
 .caption {
   position: absolute;
-  left: clamp(28px, 3.4vw, 58px);
-  bottom: clamp(30px, 4.4vw, 68px);
-  z-index: 4;
-  margin: 0;
-  color: rgba(243, 234, 216, 0.7);
-  font-family:
-    "Noto Serif JP",
-    "Yu Mincho",
-    serif;
-  font-size: clamp(0.76rem, 0.92vw, 0.92rem);
+  left: 20px;
+  bottom: calc(11svh + env(safe-area-inset-bottom));
+  z-index: 2;
+  color: rgba(243, 234, 216, 0.84);
+  font-size: clamp(1.15rem, 5.8vw, 1.55rem);
   font-weight: 300;
-  line-height: 2;
-  letter-spacing: 0.07em;
-  text-shadow:
-    0 8px 26px rgba(0, 0, 0, 0.82),
-    0 0 14px rgba(5, 4, 3, 0.72);
+  line-height: 1.78;
+  letter-spacing: 0.015em;
+  text-shadow: 0 16px 40px rgba(0, 0, 0, 0.74);
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(24px);
+  transition:
+    opacity 900ms ease 150ms,
+    transform 1100ms cubic-bezier(0.22, 1, 0.36, 1) 150ms;
 }
 
-.isMediaVisible .caption {
+:global([data-sp-visible="true"]).caption {
   opacity: 1;
   transform: translateY(0);
-  transition:
-    opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.72s,
-    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.72s;
 }
 
-/* 右の縦SVG */
-.axisHeading {
+.counterLine {
   position: absolute;
-  top: 50%;
-  right: clamp(46px, 5.8vw, 104px);
-  z-index: 5;
-  margin: 0;
-  line-height: 1;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.axisReveal {
-  position: relative;
-  display: block;
-  width: clamp(92px, 7.1vw, 142px);
-  height: clamp(560px, 76vh, 820px);
-  overflow: hidden;
-}
-
-.axisImage {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 0.58;
-  filter:
-    drop-shadow(0 0 10px rgba(185, 120, 60, 0.075))
-    drop-shadow(0 22px 54px rgba(0, 0, 0, 0.72));
-  will-change: opacity, transform, filter;
-}
-
-/* SVG文字の形だけを光が走る */
-.axisReveal::after {
-  content: "";
-  position: absolute;
-  inset: 0;
+  left: 20px;
+  bottom: calc(6svh + env(safe-area-inset-bottom));
   z-index: 2;
-  pointer-events: none;
+  width: 28vw;
+  height: 1px;
   background:
     linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(243, 234, 216, 0.42) 44%,
-      rgba(185, 120, 60, 0.24) 52%,
-      transparent 100%
+      90deg,
+      rgba(193, 138, 74, 0.48),
+      transparent
     );
-  opacity: var(--axis-trace-opacity, 0);
-  transform: translateY(var(--axis-trace-y, -115%));
-  -webkit-mask-image: url("/images/at-the-counter.svg");
-  mask-image: url("/images/at-the-counter.svg");
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  mix-blend-mode: screen;
-  will-change: opacity, transform;
 }
 
 .srOnly {
@@ -244,181 +132,22 @@
   padding: 0;
   margin: -1px;
   overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
-  clip-path: inset(50%);
-}
-
-/* Tablet */
-@media (max-width: 1100px) {
-  .mediaStage {
-    left: clamp(18px, 3vw, 38px);
-    width: min(78vw, 980px);
-    height: min(64svh, 650px);
-  }
-
-  .axisHeading {
-    right: clamp(38px, 5vw, 78px);
-  }
-
-  .axisReveal {
-    width: clamp(82px, 7.4vw, 118px);
-    height: clamp(500px, 72vh, 740px);
-  }
-
-  .axisImage {
-    opacity: 0.54;
-  }
-}
-
-/* Small Tablet */
-@media (max-width: 900px) {
-  .counter {
-    min-height: 106svh;
-  }
-
-  .mediaStage {
-    left: 0;
-    width: 84vw;
-    height: min(60svh, 590px);
-    -webkit-mask-image:
-      linear-gradient(
-        90deg,
-        #000 0%,
-        #000 70%,
-        rgba(0, 0, 0, 0.74) 82%,
-        transparent 100%
-      );
-    mask-image:
-      linear-gradient(
-        90deg,
-        #000 0%,
-        #000 70%,
-        rgba(0, 0, 0, 0.74) 82%,
-        transparent 100%
-      );
-  }
-
-  .counterVideo {
-    object-position: 44% 50%;
-  }
-
-  .axisHeading {
-    right: clamp(28px, 4.5vw, 52px);
-  }
-
-  .axisReveal {
-    width: clamp(70px, 8vw, 98px);
-    height: clamp(440px, 66vh, 640px);
-  }
-
-  .axisImage {
-    opacity: 0.5;
-  }
-}
-
-/* SP */
-@media (max-width: 640px) {
-  .counter {
-    min-height: 98svh;
-  }
-
-  .counter::after {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(5, 4, 3, 0.42) 0%,
-        transparent 18%,
-        transparent 78%,
-        rgba(5, 4, 3, 0.52) 100%
-      ),
-      linear-gradient(
-        90deg,
-        transparent 0%,
-        transparent 54%,
-        rgba(5, 4, 3, 0.22) 72%,
-        rgba(5, 4, 3, 0.9) 94%,
-        #050403 100%
-      );
-  }
-
-  .mediaStage {
-    left: 0;
-    width: calc(100% - 68px);
-    height: min(58svh, 520px);
-    -webkit-mask-image:
-      linear-gradient(
-        90deg,
-        #000 0%,
-        #000 68%,
-        rgba(0, 0, 0, 0.68) 82%,
-        transparent 100%
-      );
-    mask-image:
-      linear-gradient(
-        90deg,
-        #000 0%,
-        #000 68%,
-        rgba(0, 0, 0, 0.68) 82%,
-        transparent 100%
-      );
-  }
-
-  .counterVideo {
-    object-position: 40% 50%;
-    filter:
-      saturate(0.8)
-      contrast(1.05)
-      brightness(0.7);
-  }
-
-  .caption {
-    left: 20px;
-    bottom: 24px;
-    font-size: 0.7rem;
-    line-height: 1.9;
-    letter-spacing: 0.045em;
-  }
-
-  .axisHeading {
-    top: 50%;
-    right: 18px;
-  }
-
-  .axisReveal {
-    width: clamp(56px, 13.5vw, 72px);
-    height: clamp(360px, 58vh, 520px);
-  }
-
-  .axisImage {
-    opacity: 0.44;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mediaStage,
-  .caption {
-    opacity: 1;
-    filter: none;
+  .counterVideo {
+    opacity: 0.78;
+    transform: none;
     transition: none;
   }
 
-  .mediaStage {
-    transform: translate3d(0, -50%, 0) scale(1);
-  }
-
+  .axisHeading,
   .caption {
+    opacity: 1;
     transform: none;
-  }
-
-  .axisReveal::after {
-    display: none;
-  }
-
-  .axisImage {
-    opacity: 0.58;
-    filter:
-      drop-shadow(0 0 10px rgba(185, 120, 60, 0.075))
-      drop-shadow(0 22px 54px rgba(0, 0, 0, 0.72));
+    transition: none;
   }
 }
