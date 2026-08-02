@@ -11,7 +11,13 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="top" ref={heroRef} className={styles.hero} aria-labelledby="hero-title">
+    <section
+      id="top"
+      ref={heroRef}
+      className={styles.hero}
+      aria-labelledby="hero-title"
+      aria-describedby="hero-description hero-hours"
+    >
       <HeroLiquidCanvas
         className={styles.liquidCanvas}
         image="/images/hero-counter.jpeg"
@@ -19,10 +25,10 @@ export default function Hero() {
 
       <a
         className={styles.reserveLink}
-        href="#reserve"
-        aria-label="Reserve a seat"
+        href="#information"
+        aria-label="営業時間や店舗情報を見る"
       >
-        Reserve a seat
+        Before your visit
       </a>
 
       <div className={styles.inner}>
@@ -31,26 +37,32 @@ export default function Hero() {
         </p>
 
         <h1 id="hero-title" className={styles.logo}>
-          <span className={styles.srOnly}>MIZATO</span>
+          <span className={styles.srOnly}>
+            MIZATO｜那覇・松山のバー
+          </span>
 
           <span className={styles.logoMark} aria-hidden="true">
             <img
               className={styles.logoImage}
               src="/images/mizato-logo.svg"
               alt=""
+              fetchPriority="high"
+              draggable="false"
             />
           </span>
         </h1>
 
         <p className={styles.copy}>表の那覇を、少し離れて。</p>
 
-        <p className={styles.lead}>
-          那覇・松山。Barのカウンターで、
+        <p id="hero-description" className={styles.lead}>
+          那覇・松山のカウンターで、
           <br />
-          夜の余韻の一杯を。
+          泡盛、ウイスキー、カクテルを。
         </p>
 
-        <p className={styles.openMeta}>OPEN 19:00 - 02:00</p>
+        <p id="hero-hours" className={styles.openMeta}>
+          OPEN 19:00 — 02:00 / CLOSED SUN
+        </p>
       </div>
     </section>
   );
