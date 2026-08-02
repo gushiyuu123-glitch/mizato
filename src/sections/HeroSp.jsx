@@ -1,12 +1,20 @@
+import { useLayoutEffect, useRef } from "react";
 import HeroLiquidCanvas from "../effects/HeroLiquidCanvas.jsx";
+import { setupHeroParallax } from "../effects/setupHeroParallax.js";
 import styles from "./HeroSp.module.css";
 
 export default function HeroSp() {
+  const heroRef = useRef(null);
+
+  useLayoutEffect(() => {
+    return setupHeroParallax(heroRef.current);
+  }, []);
+
   return (
     <section
       id="top"
+      ref={heroRef}
       className={styles.hero}
-      data-sp-scene="top"
       aria-labelledby="hero-title"
       aria-describedby="hero-description hero-hours"
     >
@@ -15,14 +23,19 @@ export default function HeroSp() {
         image="/images/hero-counter.jpeg"
       />
 
-      <span className={styles.imageTone} aria-hidden="true" />
-
-      <div className={styles.topMeta} aria-hidden="true">
-        <span>那覇・松山</span>
-        <span>19:00 — 02:00</span>
-      </div>
+      <a
+        className={styles.reserveLink}
+        href="#information"
+        aria-label="営業時間や店舗情報を見る"
+      >
+        Before your visit
+      </a>
 
       <div className={styles.inner}>
+        <p className={styles.eyebrow}>
+          Cocktail &amp; Awamori / Matsuyama, Naha
+        </p>
+
         <h1 id="hero-title" className={styles.logo}>
           <span className={styles.srOnly}>
             MIZATO｜那覇・松山のバー
@@ -40,25 +53,17 @@ export default function HeroSp() {
         </h1>
 
         <p className={styles.copy}>表の那覇を、少し離れて。</p>
-      </div>
 
-      <div className={styles.footer}>
         <p id="hero-description" className={styles.lead}>
-          泡盛、ウイスキー、カクテルを。
+          那覇・松山のカウンターで、
           <br />
-          松山のカウンターで、静かな夜を。
+          泡盛、ウイスキー、カクテルを。
         </p>
 
-        <a className={styles.visitLink} href="#information">
-          ご来店案内
-        </a>
+        <p id="hero-hours" className={styles.openMeta}>
+          OPEN 19:00 — 02:00 / CLOSED SUN
+        </p>
       </div>
-
-      <p id="hero-hours" className={styles.srOnly}>
-        営業時間は19時から翌2時、定休日は日曜日です。
-      </p>
-
-      <span className={styles.scrollLine} aria-hidden="true" />
     </section>
   );
 }
