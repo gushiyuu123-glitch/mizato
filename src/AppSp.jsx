@@ -1,4 +1,5 @@
 import BrandHeaderSp from "./components/BrandHeaderSp.jsx";
+import SpAtmosphere from "./components/SpAtmosphere.jsx";
 
 import HeroSp from "./sections/HeroSp.jsx";
 import ConceptSp from "./sections/ConceptSp.jsx";
@@ -10,7 +11,13 @@ import AccessSp from "./sections/AccessSp.jsx";
 
 export default function AppSp() {
   return (
-    <>
+    <div data-sp-world data-sp-scene="top">
+      <SpAtmosphere />
+
+      <a className="skipLink" href="#main-content">
+        本文へ移動
+      </a>
+
       <BrandHeaderSp />
 
       <main id="main-content" tabIndex={-1}>
@@ -22,6 +29,6 @@ export default function AppSp() {
         <InformationSp />
         <AccessSp />
       </main>
-    </>
+    </div>
   );
 }
