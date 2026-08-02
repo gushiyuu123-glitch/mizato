@@ -1,0 +1,91 @@
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+:global([data-sp-ready="true"]) .atmosphere {
+  opacity: 1;
+}
+
+.glow,
+.edgeShade,
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glow {
+  top: auto;
+  height: 34svh;
+  background:
+    radial-gradient(
+      ellipse at 50% 112%,
+      rgb(
+        var(--sp-tone-r, 221)
+        var(--sp-tone-g, 145)
+        var(--sp-tone-b, 78)
+        / var(--sp-tone-soft, 0.08)
+      ) 0%,
+      rgb(
+        var(--sp-tone-r, 221)
+        var(--sp-tone-g, 145)
+        var(--sp-tone-b, 78)
+        / var(--sp-tone-faint, 0.025)
+      ) 40%,
+      transparent 76%
+    );
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  transform: translateY(var(--sp-glow-shift, 0vh));
+  transition: background 900ms ease;
+}
+
+.edgeShade {
+  z-index: 2;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.19) 0%,
+      transparent 9%,
+      transparent 91%,
+      rgba(0, 0, 0, 0.23) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.11) 0%,
+      transparent 14%,
+      transparent 84%,
+      rgba(0, 0, 0, 0.16) 100%
+    );
+}
+
+.grain {
+  z-index: 3;
+  opacity: 0.024;
+  background-image:
+    repeating-radial-gradient(
+      circle at 18% 27%,
+      rgba(255, 255, 255, 0.24) 0,
+      rgba(255, 255, 255, 0.24) 0.45px,
+      transparent 0.75px,
+      transparent 3.2px
+    );
+  background-size: 6px 6px;
+  mix-blend-mode: soft-light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere {
+    transition: none;
+  }
+
+  .glow {
+    transform: none;
+  }
+}
