@@ -1,0 +1,192 @@
+/* ==================================
+   Final polish
+   大枠を変えず、可読性と操作性だけを補強する。
+================================== */
+
+.skipLink {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  left: 18px;
+  z-index: 1000;
+  padding: 10px 14px;
+  border: 1px solid rgba(216, 159, 100, 0.44);
+  color: rgba(250, 241, 228, 0.96);
+  background: rgba(5, 4, 3, 0.94);
+  font-family: var(--font-serif-jp);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateY(-150%);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.skipLink:focus-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#main-content:focus {
+  outline: none;
+}
+
+section[id] {
+  scroll-margin-top: 28px;
+}
+
+#top p,
+#concept p,
+#signature p,
+#menu p,
+#information p,
+#access p,
+#access address,
+#information dd,
+#access dd {
+  text-wrap: pretty;
+}
+
+#top #hero-description {
+  color: rgba(243, 234, 216, 0.74);
+}
+
+.sectionContext {
+  color: rgba(243, 234, 216, 0.58);
+  font-family: var(--font-serif-jp);
+  font-size: clamp(0.7rem, 0.76vw, 0.82rem);
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.045em;
+}
+
+.signatureContext {
+  width: min(88vw, 620px);
+  margin: clamp(22px, 2.4vw, 34px) auto 0;
+  text-align: center;
+}
+
+.menuContext {
+  margin: 13px 0 0;
+  color: rgba(243, 234, 216, 0.5);
+  font-size: clamp(0.64rem, 0.7vw, 0.74rem);
+  line-height: 1.75;
+}
+
+#signature article p {
+  color: rgba(243, 234, 216, 0.7);
+  font-size: clamp(12.5px, 0.9vw, 14.5px);
+  letter-spacing: 0.055em;
+}
+
+#information dt span:last-child {
+  color: rgba(243, 234, 216, 0.68);
+}
+
+#information dd {
+  color: rgba(243, 234, 216, 0.78);
+}
+
+#access address {
+  color: rgba(243, 234, 216, 0.84);
+}
+
+#access dt {
+  color: rgba(211, 154, 98, 0.68);
+}
+
+#access dd {
+  color: rgba(243, 234, 216, 0.68);
+}
+
+.creatorCredit {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65em;
+  width: fit-content;
+  margin-top: 24px;
+
+  color: rgba(243, 234, 216, 0.3);
+  font-family: var(--font-serif-display);
+  font-size: clamp(0.54rem, 0.58vw, 0.62rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.09em;
+}
+
+.creatorCredit span,
+.creatorCredit a {
+  white-space: nowrap;
+}
+
+.creatorCredit a {
+  position: relative;
+  color: rgba(193, 140, 88, 0.48);
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: color 320ms ease;
+}
+
+.creatorCredit a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  background: rgba(193, 140, 88, 0.4);
+  transform: scaleX(0.18);
+  transform-origin: left center;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 320ms ease;
+}
+
+.creatorCredit a:hover,
+.creatorCredit a:focus-visible {
+  color: rgba(216, 159, 100, 0.82);
+}
+
+.creatorCredit a:hover::after,
+.creatorCredit a:focus-visible::after {
+  background: rgba(216, 159, 100, 0.72);
+  transform: scaleX(1);
+}
+
+@media (max-width: 767px) {
+  section[id] {
+    scroll-margin-top: 18px;
+  }
+
+  .signatureContext {
+    width: min(100% - 44px, 430px);
+    margin-top: 20px;
+    font-size: 0.68rem;
+  }
+
+  .menuContext {
+    max-width: 220px;
+    margin-top: 10px;
+    font-size: 0.61rem;
+    line-height: 1.7;
+  }
+
+  #signature article p {
+    font-size: 12.25px;
+    line-height: 1.95;
+  }
+
+  .creatorCredit {
+    margin-top: 26px;
+    font-size: 0.56rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skipLink,
+  .creatorCredit a,
+  .creatorCredit a::after {
+    transition: none;
+  }
+}
