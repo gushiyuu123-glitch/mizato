@@ -91,6 +91,7 @@ export default function Counter() {
       className={styles.counter}
       id="counter"
       aria-labelledby="counter-title"
+      aria-describedby="counter-description"
     >
       <div className={styles.mediaStage}>
         <video
@@ -99,13 +100,14 @@ export default function Counter() {
           src="/videos/counter.mp4"
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
+          disablePictureInPicture
           aria-hidden="true"
         />
 
         <span className={styles.mediaVeil} aria-hidden="true" />
 
-        <p className={styles.caption}>
+        <p id="counter-description" className={styles.caption}>
           会話の間に、
           <br />
           グラスの音だけが残る。
@@ -124,6 +126,7 @@ export default function Counter() {
             className={styles.axisImage}
             src="/images/at-the-counter.svg"
             alt=""
+            draggable="false"
           />
         </span>
       </h2>
