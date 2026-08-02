@@ -22,28 +22,13 @@
 
     <meta
       name="description"
-      content="沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを、落ち着いたカウンターで。営業時間、メニュー、アクセスをご案内します。"
+      content="沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを落ち着いたカウンターで。メニュー、営業時間、席数、アクセスをご案内します。"
     />
 
-    <meta
-      name="author"
-      content="GUSHIKEN DESIGN"
-    />
-
-    <meta
-      name="creator"
-      content="GUSHIKEN DESIGN"
-    />
-
-    <meta
-      name="application-name"
-      content="MIZATO"
-    />
-
-    <meta
-      name="apple-mobile-web-app-title"
-      content="MIZATO"
-    />
+    <meta name="author" content="GUSHIKEN DESIGN" />
+    <meta name="creator" content="GUSHIKEN DESIGN" />
+    <meta name="application-name" content="MIZATO" />
+    <meta name="apple-mobile-web-app-title" content="MIZATO" />
 
     <meta
       name="format-detection"
@@ -56,10 +41,7 @@
     />
 
     <!-- Google翻訳を無効化 -->
-    <meta
-      name="google"
-      content="notranslate"
-    />
+    <meta name="google" content="notranslate" />
 
     <!-- ==================================
          Search Engine
@@ -80,6 +62,12 @@
     />
 
     <link
+      rel="sitemap"
+      type="application/xml"
+      href="https://mizato.vercel.app/sitemap.xml"
+    />
+
+    <link
       rel="author"
       href="https://gushikendesign.com/"
     />
@@ -87,26 +75,10 @@
     <!-- ==================================
          Browser Appearance
     ================================== -->
-    <meta
-      name="theme-color"
-      content="#050403"
-    />
-
-    <meta
-      name="color-scheme"
-      content="dark"
-    />
-
-    <meta
-      name="mobile-web-app-capable"
-      content="yes"
-    />
-
-    <meta
-      name="apple-mobile-web-app-capable"
-      content="yes"
-    />
-
+    <meta name="theme-color" content="#050403" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
@@ -154,20 +126,9 @@
     <!-- ==================================
          Open Graph
     ================================== -->
-    <meta
-      property="og:type"
-      content="website"
-    />
-
-    <meta
-      property="og:locale"
-      content="ja_JP"
-    />
-
-    <meta
-      property="og:site_name"
-      content="MIZATO"
-    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:site_name" content="MIZATO" />
 
     <meta
       property="og:title"
@@ -176,7 +137,7 @@
 
     <meta
       property="og:description"
-      content="表の那覇を、少し離れて。泡盛、ウイスキー、カクテルを楽しめる、那覇・松山のバー。"
+      content="泡盛、ウイスキー、カクテルを落ち着いたカウンターで楽しめる、沖縄・那覇市松山のバー MIZATO。"
     />
 
     <meta
@@ -194,20 +155,9 @@
       content="https://mizato.vercel.app/ogp/mizato-ogp.png"
     />
 
-    <meta
-      property="og:image:type"
-      content="image/png"
-    />
-
-    <meta
-      property="og:image:width"
-      content="1536"
-    />
-
-    <meta
-      property="og:image:height"
-      content="1024"
-    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1536" />
+    <meta property="og:image:height" content="1024" />
 
     <meta
       property="og:image:alt"
@@ -217,10 +167,7 @@
     <!-- ==================================
          X / Twitter
     ================================== -->
-    <meta
-      name="twitter:card"
-      content="summary_large_image"
-    />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <meta
       name="twitter:title"
@@ -229,7 +176,12 @@
 
     <meta
       name="twitter:description"
-      content="表の那覇を、少し離れて。泡盛、ウイスキー、カクテルを楽しめる、那覇・松山のバー。"
+      content="泡盛、ウイスキー、カクテルを落ち着いたカウンターで楽しめる、沖縄・那覇市松山のバー MIZATO。"
+    />
+
+    <meta
+      name="twitter:url"
+      content="https://mizato.vercel.app/"
     />
 
     <meta
@@ -244,11 +196,20 @@
 
     <!-- ==================================
          Structured Data
+         実住所・電話番号が確定するまでは
+         LocalBusiness / BarOrPub を使用しない。
     ================================== -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://mizato.vercel.app/#organization",
+            "name": "MIZATO",
+            "alternateName": "ミザト",
+            "url": "https://mizato.vercel.app/"
+          },
           {
             "@type": "Organization",
             "@id": "https://gushikendesign.com/#organization",
@@ -261,12 +222,12 @@
             "url": "https://mizato.vercel.app/",
             "name": "MIZATO",
             "alternateName": "ミザト",
-            "description": "沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを楽しめるバーです。",
+            "description": "沖縄県那覇市松山のバーMIZATO。泡盛、ウイスキー、カクテルを楽しめるバーです。",
             "inLanguage": "ja-JP",
-            "creator": {
-              "@id": "https://gushikendesign.com/#organization"
-            },
             "publisher": {
+              "@id": "https://mizato.vercel.app/#organization"
+            },
+            "creator": {
               "@id": "https://gushikendesign.com/#organization"
             }
           },
@@ -284,22 +245,40 @@
             "@id": "https://mizato.vercel.app/#webpage",
             "url": "https://mizato.vercel.app/",
             "name": "MIZATO｜那覇・松山のバー",
-            "description": "沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを、落ち着いたカウンターで。営業時間、メニュー、アクセスをご案内します。",
+            "description": "沖縄県那覇市松山のバーMIZATO。泡盛、ウイスキー、カクテルを落ち着いたカウンターで楽しめます。",
             "isPartOf": {
               "@id": "https://mizato.vercel.app/#website"
             },
             "primaryImageOfPage": {
               "@id": "https://mizato.vercel.app/#primaryimage"
             },
+            "publisher": {
+              "@id": "https://mizato.vercel.app/#organization"
+            },
             "creator": {
               "@id": "https://gushikendesign.com/#organization"
             },
-            "publisher": {
-              "@id": "https://gushikendesign.com/#organization"
-            },
             "copyrightHolder": {
-              "@id": "https://gushikendesign.com/#organization"
+              "@id": "https://mizato.vercel.app/#organization"
             },
+            "about": [
+              {
+                "@type": "Thing",
+                "name": "泡盛"
+              },
+              {
+                "@type": "Thing",
+                "name": "ウイスキー"
+              },
+              {
+                "@type": "Thing",
+                "name": "カクテル"
+              },
+              {
+                "@type": "Place",
+                "name": "沖縄県那覇市松山"
+              }
+            ],
             "inLanguage": "ja-JP"
           }
         ]
