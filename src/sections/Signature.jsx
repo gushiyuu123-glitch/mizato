@@ -7,19 +7,19 @@ import styles from "./Signature.module.css";
 const glassItems = [
   {
     name: "Awamori",
-    copy: "透明な一杯に、島の余韻。",
+    copy: "定番から古酒まで、島の酒を一杯ずつ。",
     image: "/images/signature-awamori.png",
     alt: "泡盛を注いだグラス",
   },
   {
     name: "Whiskey",
-    copy: "琥珀の奥に、夜が沈む。",
+    copy: "シングルモルトや国産を、好みの飲み方で。",
     image: "/images/signature-whiskey.png",
     alt: "琥珀色のウイスキーグラス",
   },
   {
     name: "Cocktail",
-    copy: "香りのあとに、輪郭が残る。",
+    copy: "定番と季節の一杯を、その日の気分に合わせて。",
     image: "/images/signature-cocktail.png",
     alt: "MIZATOのカクテルグラス",
   },
@@ -38,6 +38,7 @@ export default function Signature() {
       className={styles.signature}
       id="signature"
       aria-labelledby="signature-title"
+      aria-describedby="signature-summary"
     >
       <header className={styles.header}>
         <h2 id="signature-title" className={styles.heading}>
@@ -52,6 +53,7 @@ export default function Signature() {
               className={styles.headingImage}
               src="/images/in-the-glass.svg"
               alt=""
+              draggable="false"
             />
           </span>
         </h2>
@@ -61,10 +63,17 @@ export default function Signature() {
           data-signature-line
           aria-hidden="true"
         />
+
+        <p
+          id="signature-summary"
+          className="sectionContext signatureContext"
+        >
+          泡盛・ウイスキー・カクテルを中心にご用意しています。
+        </p>
       </header>
 
       <div className={styles.glassArea}>
-        {glassItems.map((item, index) => (
+        {glassItems.map((item) => (
           <article
             key={item.name}
             className={styles.glassItem}
@@ -77,12 +86,9 @@ export default function Signature() {
                 alt={item.alt}
                 loading="lazy"
                 decoding="async"
+                draggable="false"
                 data-signature-parallax
               />
-
-              <span className={styles.itemNumber} aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
             </div>
 
             <div className={styles.itemMeta}>
