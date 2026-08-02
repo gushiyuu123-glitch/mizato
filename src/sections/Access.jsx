@@ -43,6 +43,7 @@ export default function Access() {
       className={styles.access}
       id="access"
       aria-labelledby="access-title"
+      aria-describedby="access-summary"
     >
       <div
         className={styles.scene}
@@ -53,6 +54,9 @@ export default function Access() {
           className={styles.sceneImage}
           src="/images/access-matsuyama.png"
           alt=""
+          loading="lazy"
+          decoding="async"
+          draggable="false"
           data-access-image
         />
 
@@ -95,7 +99,7 @@ export default function Access() {
               Access
             </h2>
 
-            <p className={styles.location}>
+            <p id="access-summary" className={styles.location}>
               那覇・松山にあります。
             </p>
           </header>
@@ -131,24 +135,24 @@ export default function Access() {
             className={styles.mapLink}
             href={ACCESS_INFO.mapUrl}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             data-access-link
           >
             Google Mapsで場所を確認する
           </a>
 
-          <p className={styles.creatorCredit}>
+          <small className="creatorCredit">
             <span>Web Design by</span>
 
             <a
               href="https://gushikendesign.com/"
               target="_blank"
-              rel="author external noopener"
+              rel="author external noopener noreferrer"
               aria-label="GUSHIKEN DESIGNのWebサイトを見る"
             >
               GUSHIKEN DESIGN
             </a>
-          </p>
+          </small>
         </div>
       </div>
     </section>
