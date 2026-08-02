@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/sp-120-preview
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
