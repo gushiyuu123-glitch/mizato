@@ -58,68 +58,135 @@ const fragmentShader = `
 
     /*
       水面そのものの歪み。
-      線を描くのではなく、画像のサンプリング位置だけを揺らす。
-      この構造が一番滑らかなので、ここは触らない。
+      線を描かず、画像のサンプリング位置だけを揺らす。
     */
     float softArea = smoothstep(0.98, 0.08, dist);
     float waveA = sin(dist * 34.0 - uTime * 5.6);
-    float waveB = sin((screenUv.x * 18.0 + screenUv.y * 11.0) + uTime * 2.2);
-    float waveC = cos((screenUv.y * 28.0 - screenUv.x * 9.0) - uTime * 2.7);
+    float waveB =
+      sin((screenUv.x * 18.0 + screenUv.y * 11.0) + uTime * 2.2);
+    float waveC =
+      cos((screenUv.y * 28.0 - screenUv.x * 9.0) - uTime * 2.7);
 
     float wave = waveA * 0.58 + waveB * 0.26 + waveC * 0.16;
     float amp = intro * intro * 0.032 * softArea;
 
     vec2 offset = dir * wave * amp;
-    offset.x += sin(screenUv.y * 42.0 + uTime * 2.1) * amp * 0.22;
-    offset.y += cos(screenUv.x * 36.0 - uTime * 1.8) * amp * 0.16;
+    offset.x +=
+      sin(screenUv.y * 42.0 + uTime * 2.1) * amp * 0.22;
+    offset.y +=
+      cos(screenUv.x * 36.0 - uTime * 1.8) * amp * 0.16;
 
-    vec2 uv = clamp(imageUv + offset, vec2(0.001), vec2(0.999));
+    vec2 uv = clamp(
+      imageUv + offset,
+      vec2(0.001),
+      vec2(0.999)
+    );
 
     vec4 tex = texture2D(uTexture, uv);
 
     /*
-      MIZATO用の暗さ・琥珀寄せ。
-      写真をそのまま出さず、黒に沈める。
+      MIZATO用の暗さと琥珀寄せ。
     */
     tex.rgb *= 0.68;
 
-    float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
+    float luma = dot(
+      tex.rgb,
+      vec3(0.299, 0.587, 0.114)
+    );
+
     tex.rgb = mix(vec3(luma), tex.rgb, 0.84);
 
     /*
       琥珀の波紋発光。
-      動きの滑らかさは残しつつ、ぼわぼわ見える光だけ弱める。
-      0.025だと少し見えすぎるので、0.012に抑える。
     */
     vec3 amber = vec3(0.95, 0.58, 0.24);
-    tex.rgb += amber * intro * softArea * max(waveA, 0.0) * 0.012;
+    tex.rgb +=
+      amber *
+      intro *
+      softArea *
+      max(waveA, 0.0) *
+      0.012;
 
-    float vignette = smoothstep(0.96, 0.18, length(screenUv - vec2(0.5)));
+    float vignette = smoothstep(
+      0.96,
+      0.18,
+      length(screenUv - vec2(0.5))
+    );
+
     tex.rgb *= mix(0.58, 1.0, vignette);
 
-    float g = grain(screenUv * uResolution + uTime);
+    float g = grain(
+      screenUv * uResolution + uTime
+    );
+
     tex.rgb += (g - 0.5) * 0.018;
 
-    float fade = smoothstep(0.0, 0.72, uProgress);
+    float fade = smoothstep(
+      0.0,
+      0.72,
+      uProgress
+    );
+
     float alpha = 0.76 * fade;
 
     gl_FragColor = vec4(tex.rgb, alpha);
   }
 `;
 
+const INTRO_DURATION = 2.25;
+const MAX_PIXEL_RATIO = 1.8;
+const MOBILE_MAX_PIXEL_RATIO = 1.45;
+
 function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-export default function HeroLiquidCanvas({ image, className = "" }) {
+function getPixelRatio() {
+  const ratio = window.devicePixelRatio || 1;
+  const isMobile =
+    window.matchMedia?.("(max-width: 767px)")?.matches ?? false;
+
+  return Math.min(
+    ratio,
+    isMobile ? MOBILE_MAX_PIXEL_RATIO : MAX_PIXEL_RATIO
+  );
+}
+
+function setResponsiveUniforms(width, uniforms) {
+  if (width <= 640) {
+    uniforms.uCenter.value.set(0.5, 0.46);
+    uniforms.uShift.value.set(0.02, -0.005);
+    return;
+  }
+
+  if (width <= 900) {
+    uniforms.uCenter.value.set(0.5, 0.45);
+    uniforms.uShift.value.set(0.045, -0.005);
+    return;
+  }
+
+  uniforms.uCenter.value.set(0.58, 0.45);
+  uniforms.uShift.value.set(0.07, -0.005);
+}
+
+export default function HeroLiquidCanvas({
+  image,
+  className = "",
+}) {
   const mountRef = useRef(null);
 
   useEffect(() => {
     const mount = mountRef.current;
-    if (!mount) return;
+
+    if (!mount || !image) {
+      return undefined;
+    }
 
     let disposed = false;
-    let frameId = null;
+    let stopped = false;
+    let frameId = 0;
+    let startedAt = 0;
+
     let renderer = null;
     let scene = null;
     let camera = null;
@@ -127,155 +194,342 @@ export default function HeroLiquidCanvas({ image, className = "" }) {
     let geometry = null;
     let material = null;
     let mesh = null;
-    let startedAt = 0;
-    let stopped = false;
+    let resizeObserver = null;
 
     const reduceMotion =
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+      window.matchMedia?.(
+        "(prefers-reduced-motion: reduce)"
+      )?.matches ?? false;
 
-    renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: "high-performance",
-    });
+    const originalBackgroundImage =
+      mount.style.backgroundImage;
+    const originalBackgroundSize =
+      mount.style.backgroundSize;
+    const originalBackgroundPosition =
+      mount.style.backgroundPosition;
+    const originalBackgroundRepeat =
+      mount.style.backgroundRepeat;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+    const applyFallback = () => {
+      mount.style.backgroundImage = `url("${image}")`;
+      mount.style.backgroundSize = "cover";
+      mount.style.backgroundPosition = "center";
+      mount.style.backgroundRepeat = "no-repeat";
+    };
+
+    const clearFallback = () => {
+      mount.style.backgroundImage =
+        originalBackgroundImage;
+      mount.style.backgroundSize =
+        originalBackgroundSize;
+      mount.style.backgroundPosition =
+        originalBackgroundPosition;
+      mount.style.backgroundRepeat =
+        originalBackgroundRepeat;
+    };
+
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+        preserveDrawingBuffer: false,
+      });
+    } catch (error) {
+      console.warn(
+        "MIZATO Hero: WebGL renderer could not be created.",
+        error
+      );
+
+      applyFallback();
+      return clearFallback;
+    }
+
+    renderer.setPixelRatio(getPixelRatio());
     renderer.setClearColor(0x050403, 0);
 
     if ("outputColorSpace" in renderer) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
     }
 
-    renderer.domElement.setAttribute("aria-hidden", "true");
-    mount.appendChild(renderer.domElement);
+    const canvas = renderer.domElement;
+
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.setAttribute("role", "presentation");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+
+    mount.appendChild(canvas);
 
     scene = new THREE.Scene();
-    camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    camera = new THREE.OrthographicCamera(
+      -1,
+      1,
+      1,
+      -1,
+      0,
+      1
+    );
 
     const uniforms = {
       uTexture: { value: null },
-      uResolution: { value: new THREE.Vector2(1, 1) },
-      uImageResolution: { value: new THREE.Vector2(1, 1) },
-      uCenter: { value: new THREE.Vector2(0.58, 0.45) },
-      uShift: { value: new THREE.Vector2(0.07, -0.005) },
+      uResolution: {
+        value: new THREE.Vector2(1, 1),
+      },
+      uImageResolution: {
+        value: new THREE.Vector2(1, 1),
+      },
+      uCenter: {
+        value: new THREE.Vector2(0.58, 0.45),
+      },
+      uShift: {
+        value: new THREE.Vector2(0.07, -0.005),
+      },
       uTime: { value: 0 },
       uProgress: { value: 0 },
     };
 
-    const setSize = () => {
-      if (!mount || !renderer) return;
-
-      const width = Math.max(1, mount.clientWidth);
-      const height = Math.max(1, mount.clientHeight);
-
-      renderer.setSize(width, height, false);
-      uniforms.uResolution.value.set(width, height);
-
-      if (width <= 640) {
-        uniforms.uCenter.value.set(0.5, 0.46);
-        uniforms.uShift.value.set(0.02, -0.005);
-      } else if (width <= 900) {
-        uniforms.uCenter.value.set(0.5, 0.45);
-        uniforms.uShift.value.set(0.045, -0.005);
-      } else {
-        uniforms.uCenter.value.set(0.58, 0.45);
-        uniforms.uShift.value.set(0.07, -0.005);
-      }
-
-      if (mesh && stopped) {
-        renderer.render(scene, camera);
-      }
-    };
-
     const render = () => {
-      if (!renderer || !scene || !camera) return;
+      if (
+        disposed ||
+        !renderer ||
+        !scene ||
+        !camera ||
+        !mesh
+      ) {
+        return;
+      }
+
       renderer.render(scene, camera);
     };
 
-    const animate = (now) => {
-      if (disposed || !mesh) return;
+    const setSize = () => {
+      if (disposed || !renderer) {
+        return;
+      }
 
-      const elapsed = (now - startedAt) / 1000;
-      const rawProgress = Math.min(elapsed / 2.25, 1);
+      const width = Math.max(
+        1,
+        Math.round(mount.clientWidth)
+      );
+
+      const height = Math.max(
+        1,
+        Math.round(mount.clientHeight)
+      );
+
+      renderer.setPixelRatio(getPixelRatio());
+      renderer.setSize(width, height, false);
+
+      uniforms.uResolution.value.set(
+        width,
+        height
+      );
+
+      setResponsiveUniforms(
+        width,
+        uniforms
+      );
+
+      if (mesh && stopped) {
+        render();
+      }
+    };
+
+    const animate = (now) => {
+      if (disposed || !mesh) {
+        return;
+      }
+
+      const elapsed =
+        Math.max(0, now - startedAt) / 1000;
+
+      const rawProgress = Math.min(
+        elapsed / INTRO_DURATION,
+        1
+      );
 
       uniforms.uTime.value = elapsed;
-      uniforms.uProgress.value = easeOutCubic(rawProgress);
+      uniforms.uProgress.value =
+        easeOutCubic(rawProgress);
 
       render();
 
       if (rawProgress < 1) {
-        frameId = requestAnimationFrame(animate);
-      } else {
-        stopped = true;
-        uniforms.uProgress.value = 1;
-        render();
+        frameId = window.requestAnimationFrame(
+          animate
+        );
+        return;
       }
+
+      stopped = true;
+      uniforms.uProgress.value = 1;
+      render();
     };
+
+    const handleContextLost = (event) => {
+      event.preventDefault();
+
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+        frameId = 0;
+      }
+
+      applyFallback();
+    };
+
+    canvas.addEventListener(
+      "webglcontextlost",
+      handleContextLost,
+      false
+    );
 
     const loader = new THREE.TextureLoader();
 
-    loader.load(image, (loadedTexture) => {
-      if (disposed) {
-        loadedTexture.dispose();
-        return;
+    loader.load(
+      image,
+      (loadedTexture) => {
+        if (disposed) {
+          loadedTexture.dispose();
+          return;
+        }
+
+        texture = loadedTexture;
+
+        if ("colorSpace" in texture) {
+          texture.colorSpace =
+            THREE.SRGBColorSpace;
+        }
+
+        texture.minFilter =
+          THREE.LinearFilter;
+        texture.magFilter =
+          THREE.LinearFilter;
+        texture.wrapS =
+          THREE.ClampToEdgeWrapping;
+        texture.wrapT =
+          THREE.ClampToEdgeWrapping;
+        texture.generateMipmaps = false;
+        texture.needsUpdate = true;
+
+        const sourceImage = texture.image;
+
+        uniforms.uTexture.value = texture;
+        uniforms.uImageResolution.value.set(
+          sourceImage?.naturalWidth ||
+            sourceImage?.videoWidth ||
+            sourceImage?.width ||
+            1,
+          sourceImage?.naturalHeight ||
+            sourceImage?.videoHeight ||
+            sourceImage?.height ||
+            1
+        );
+
+        geometry = new THREE.PlaneGeometry(
+          2,
+          2,
+          1,
+          1
+        );
+
+        material = new THREE.ShaderMaterial({
+          uniforms,
+          vertexShader,
+          fragmentShader,
+          transparent: true,
+          depthTest: false,
+          depthWrite: false,
+          toneMapped: false,
+        });
+
+        mesh = new THREE.Mesh(
+          geometry,
+          material
+        );
+
+        mesh.frustumCulled = false;
+        scene.add(mesh);
+
+        setSize();
+
+        if (reduceMotion) {
+          uniforms.uProgress.value = 1;
+          uniforms.uTime.value = 0;
+          stopped = true;
+          render();
+          return;
+        }
+
+        startedAt = performance.now();
+
+        frameId =
+          window.requestAnimationFrame(
+            animate
+          );
+      },
+      undefined,
+      (error) => {
+        if (disposed) {
+          return;
+        }
+
+        console.warn(
+          `MIZATO Hero: image could not be loaded: ${image}`,
+          error
+        );
+
+        applyFallback();
+
+        if (
+          renderer?.domElement?.parentNode ===
+          mount
+        ) {
+          mount.removeChild(
+            renderer.domElement
+          );
+        }
+
+        renderer?.dispose();
+        renderer = null;
       }
+    );
 
-      texture = loadedTexture;
-
-      if ("colorSpace" in texture) {
-        texture.colorSpace = THREE.SRGBColorSpace;
-      }
-
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      texture.wrapS = THREE.ClampToEdgeWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
-
-      const img = texture.image;
-
-      uniforms.uTexture.value = texture;
-      uniforms.uImageResolution.value.set(
-        img?.naturalWidth || img?.width || 1,
-        img?.naturalHeight || img?.height || 1
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(
+        setSize
       );
 
-      geometry = new THREE.PlaneGeometry(2, 2);
+      resizeObserver.observe(mount);
+    } else {
+      window.addEventListener(
+        "resize",
+        setSize,
+        { passive: true }
+      );
+    }
 
-      material = new THREE.ShaderMaterial({
-        uniforms,
-        vertexShader,
-        fragmentShader,
-        transparent: true,
-        depthTest: false,
-        depthWrite: false,
-      });
-
-      mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
-
-      setSize();
-
-      if (reduceMotion) {
-        uniforms.uProgress.value = 1;
-        uniforms.uTime.value = 0;
-        stopped = true;
-        render();
-        return;
-      }
-
-      startedAt = performance.now();
-      frameId = requestAnimationFrame(animate);
-    });
-
-    window.addEventListener("resize", setSize);
+    setSize();
 
     return () => {
       disposed = true;
 
-      window.removeEventListener("resize", setSize);
+      resizeObserver?.disconnect();
+
+      window.removeEventListener(
+        "resize",
+        setSize
+      );
+
+      canvas.removeEventListener(
+        "webglcontextlost",
+        handleContextLost,
+        false
+      );
 
       if (frameId) {
-        cancelAnimationFrame(frameId);
+        window.cancelAnimationFrame(frameId);
       }
 
       if (mesh && scene) {
@@ -287,14 +541,36 @@ export default function HeroLiquidCanvas({ image, className = "" }) {
       texture?.dispose();
 
       if (renderer) {
+        renderer.renderLists?.dispose?.();
         renderer.dispose();
 
-        if (renderer.domElement?.parentNode) {
-          renderer.domElement.parentNode.removeChild(renderer.domElement);
+        if (
+          renderer.domElement?.parentNode ===
+          mount
+        ) {
+          mount.removeChild(
+            renderer.domElement
+          );
         }
       }
+
+      clearFallback();
+
+      renderer = null;
+      scene = null;
+      camera = null;
+      texture = null;
+      geometry = null;
+      material = null;
+      mesh = null;
     };
   }, [image]);
 
-  return <div ref={mountRef} className={className} aria-hidden="true" />;
+  return (
+    <div
+      ref={mountRef}
+      className={className}
+      aria-hidden="true"
+    />
+  );
 }

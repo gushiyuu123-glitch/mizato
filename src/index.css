@@ -16,16 +16,25 @@
   --brown: #3a1b13;
   --deep-red: #281010;
 
-  color: var(--ink);
-  background: var(--bg);
-
-  font-family:
+  --font-serif-jp:
+    "Noto Serif JP",
     "Yu Mincho",
     "Hiragino Mincho ProN",
-    "Times New Roman",
     serif;
 
+  --font-serif-display:
+    "Cormorant Garamond",
+    "Times New Roman",
+    "Yu Mincho",
+    serif;
+
+  color: var(--ink);
+  background: var(--bg);
+  color-scheme: dark;
+
+  font-family: var(--font-serif-jp);
   font-synthesis: none;
+  font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -39,20 +48,24 @@
 
 html {
   min-width: 320px;
+  min-height: 100%;
   background: var(--bg);
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
+  position: relative;
   margin: 0;
   min-width: 320px;
+  min-height: 100vh;
   min-height: 100svh;
   color: var(--ink);
   background:
     radial-gradient(
       circle at 50% 0%,
-      rgba(155, 106, 54, 0.12),
+      rgba(155, 106, 54, 0.11),
       transparent 34rem
     ),
     linear-gradient(
@@ -61,11 +74,19 @@ body {
       var(--bg) 42%,
       #070504 100%
     );
-  overflow-x: hidden;
+  overflow-x: clip;
+  line-height: 1.7;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
 }
 
 ::selection {
-  color: var(--bg);
+  color: var(--bg-deep);
   background: var(--gold-soft);
 }
 
@@ -79,6 +100,13 @@ blockquote,
 dl,
 dd {
   margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font: inherit;
 }
 
 ul,
@@ -121,27 +149,88 @@ img {
   height: auto;
 }
 
+canvas {
+  touch-action: none;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus {
+  outline: none;
+}
+
 :focus-visible {
-  outline: 1px solid var(--gold-soft);
-  outline-offset: 4px;
+  outline: 1px solid rgba(193, 138, 74, 0.9);
+  outline-offset: 5px;
 }
 
 #root {
+  min-height: 100vh;
   min-height: 100svh;
   isolation: isolate;
 }
-html, body { overflow-x: clip; }
-@supports not (overflow: clip){
-  html, body { overflow-x: hidden; }
+
+/* Lenis */
+html.has-lenis,
+html.lenis,
+html.lenis body {
+  height: auto;
+  scroll-behavior: auto;
 }
+
 html.has-lenis,
 html.has-lenis body {
   overscroll-behavior: none;
 }
 
+html.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+html.lenis [data-lenis-prevent],
+html.lenis [data-lenis-prevent-wheel],
+html.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+
+html.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* SPはネイティブスクロール */
 @media (max-width: 767px) {
+  html {
+    scroll-behavior: auto;
+  }
+
   html,
   body {
     overscroll-behavior: auto;
+  }
+
+  canvas {
+    touch-action: auto;
+  }
+}
+
+/* モーションを抑える設定 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

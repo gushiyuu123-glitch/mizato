@@ -10,7 +10,8 @@
   --axis-trace-y: 110%;
   --axis-trace-opacity: 0;
 }
-/* Heroから急に切り替わらないための、ほぼ見えない奥行き */
+
+/* Heroから黒へ自然に沈ませる */
 .concept::before {
   content: "";
   position: absolute;
@@ -19,28 +20,28 @@
   pointer-events: none;
   background:
     radial-gradient(
-      circle at 34% 48%,
-      rgba(185, 120, 60, 0.055),
-      transparent 34rem
+      circle at 31% 48%,
+      rgba(185, 120, 60, 0.05),
+      transparent 33rem
     ),
     radial-gradient(
-      circle at 72% 72%,
-      rgba(214, 149, 80, 0.026),
-      transparent 28rem
+      circle at 76% 68%,
+      rgba(214, 149, 80, 0.024),
+      transparent 27rem
     ),
     linear-gradient(
       180deg,
-      rgba(5, 4, 3, 0.04) 0%,
-      rgba(5, 4, 3, 0) 42%,
-      rgba(5, 4, 3, 0.18) 100%
+      rgba(5, 4, 3, 0.02) 0%,
+      rgba(5, 4, 3, 0) 38%,
+      rgba(5, 4, 3, 0.2) 100%
     );
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-/* 左SVG */
+/* 左の縦タイポ */
 .axisHeading {
   position: absolute;
-  left: clamp(120px, 16vw, 260px);
+  left: clamp(118px, 15.5vw, 252px);
   top: 56%;
   z-index: 2;
   margin: 0;
@@ -52,7 +53,7 @@
 .axisReveal {
   position: relative;
   display: block;
-  width: clamp(100px, 8.35vw, 154px);
+  width: clamp(96px, 8vw, 148px);
   height: clamp(580px, 80vh, 860px);
   overflow: hidden;
 }
@@ -60,10 +61,8 @@
 .axisReveal::after {
   content: "";
   position: absolute;
-  left: -42%;
-  right: -42%;
-  bottom: 0;
-  height: 110px;
+  inset: 0;
+  z-index: 2;
   pointer-events: none;
   opacity: var(--axis-trace-opacity);
   transform: translateY(var(--axis-trace-y));
@@ -72,61 +71,36 @@
       180deg,
       transparent 0%,
       rgba(246, 190, 118, 0.02) 18%,
-      rgba(246, 190, 118, 0.28) 48%,
-      rgba(246, 190, 118, 0.04) 78%,
+      rgba(246, 190, 118, 0.34) 46%,
+      rgba(243, 234, 216, 0.18) 52%,
+      rgba(246, 190, 118, 0.04) 76%,
       transparent 100%
     );
-  mix-blend-mode: screen;
-}
-.axisReveal::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-
-  opacity: var(--axis-trace-opacity);
-  transform: translateY(var(--axis-trace-y));
-
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(246, 190, 118, 0.02) 18%,
-    rgba(246, 190, 118, 0.34) 46%,
-    rgba(243, 234, 216, 0.18) 52%,
-    rgba(246, 190, 118, 0.04) 76%,
-    transparent 100%
-  );
-
   -webkit-mask-image: url("/images/take-a-seat.svg");
   mask-image: url("/images/take-a-seat.svg");
-
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-
   -webkit-mask-position: center;
   mask-position: center;
-
   -webkit-mask-size: contain;
   mask-size: contain;
-
   mix-blend-mode: screen;
   will-change: opacity, transform;
 }
+
 .axisImage {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
   opacity: 0.68;
-  transform: none;
   filter:
     drop-shadow(0 0 10px rgba(185, 120, 60, 0.1))
     drop-shadow(0 18px 44px rgba(0, 0, 0, 0.84));
   will-change: clip-path, opacity;
 }
 
-/* 中央縦線 */
+/* 中央の細い軸線 */
 .dividerLine {
   position: absolute;
   left: 41.8%;
@@ -143,20 +117,21 @@
       180deg,
       transparent 0%,
       rgba(185, 120, 60, 0.08) 8%,
-      rgba(185, 120, 60, 0.32) 28%,
-      rgba(243, 234, 216, 0.18) 50%,
-      rgba(185, 120, 60, 0.22) 72%,
+      rgba(185, 120, 60, 0.3) 28%,
+      rgba(243, 234, 216, 0.16) 50%,
+      rgba(185, 120, 60, 0.2) 72%,
       transparent 100%
     );
   box-shadow:
-    0 0 18px rgba(185, 120, 60, 0.08),
+    0 0 18px rgba(185, 120, 60, 0.07),
     0 18px 44px rgba(0, 0, 0, 0.72);
   will-change: clip-path, opacity;
 }
+
+/* 右コピー */
 .copyBlock {
   position: absolute;
-  left: auto;
-  right: clamp(175px, 16vw, 300px);
+  right: clamp(165px, 15.5vw, 292px);
   top: 51.5%;
   z-index: 3;
   width: min(34vw, 540px);
@@ -169,8 +144,8 @@
 .copyBlock::before {
   content: "";
   position: absolute;
-  top: -120px;
-  right: -90px;
+  top: -118px;
+  right: -88px;
   z-index: -1;
   width: clamp(220px, 22vw, 380px);
   height: clamp(260px, 28vw, 460px);
@@ -178,27 +153,37 @@
   background:
     radial-gradient(
       circle at 52% 34%,
-      rgba(160, 87, 34, 0.16),
-      rgba(160, 87, 34, 0.06) 32%,
-      rgba(160, 87, 34, 0.02) 52%,
+      rgba(160, 87, 34, 0.15),
+      rgba(160, 87, 34, 0.055) 32%,
+      rgba(160, 87, 34, 0.018) 52%,
       transparent 76%
     );
   filter: blur(34px);
-  opacity: 0.42;
+  opacity: 0.38;
+}
+
+.kicker {
+  margin: 0 0 22px;
+  color: rgba(193, 140, 88, 0.64);
+  font-family: "Times New Roman", "Yu Mincho", serif;
+  font-size: clamp(0.62rem, 0.68vw, 0.74rem);
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .copyTitle {
   margin: 0;
   font-family: "Cormorant Garamond", "Times New Roman", serif;
-  font-size: clamp(42px, 4.15vw, 74px);
+  font-size: clamp(40px, 3.95vw, 70px);
   font-style: italic;
   font-weight: 300;
-  line-height: 0.98;
-  letter-spacing: -0.012em;
-  color: rgba(241, 231, 222, 0.78);
+  line-height: 0.99;
+  letter-spacing: -0.018em;
+  color: rgba(241, 231, 222, 0.8);
   text-align: right;
   text-shadow:
-    0 0 10px rgba(255, 230, 204, 0.035),
+    0 0 10px rgba(255, 230, 204, 0.03),
     0 20px 44px rgba(0, 0, 0, 0.62);
 }
 
@@ -206,18 +191,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-top: clamp(48px, 5vw, 76px);
+  margin-top: clamp(52px, 5.2vw, 78px);
 }
 
 .copyLine {
-  margin: 0;
   width: fit-content;
-  font-family: "Noto Serif JP", serif;
-  font-size: clamp(13px, 1.02vw, 18px);
+  margin: 0;
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
+  font-size: clamp(13px, 0.98vw, 17px);
   font-weight: 300;
-  line-height: 1.9;
-  letter-spacing: 0.09em;
-  color: rgba(240, 232, 224, 0.72);
+  line-height: 1.95;
+  letter-spacing: 0.055em;
+  color: rgba(240, 232, 224, 0.74);
   text-align: right;
   text-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
 }
@@ -227,24 +212,25 @@
 }
 
 .line02 {
-  margin-top: 42px;
+  margin-top: 34px;
 }
 
 .line03 {
-  margin-top: 46px;
+  margin-top: 36px;
 }
 
 .line04 {
-  margin-top: 92px;
-  font-size: clamp(14px, 1.08vw, 19px);
-  letter-spacing: 0.075em;
-  color: rgba(193, 140, 88, 0.76);
+  margin-top: 76px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(193, 140, 88, 0.18);
+  font-size: clamp(14px, 1.02vw, 18px);
+  letter-spacing: 0.045em;
+  color: rgba(202, 148, 93, 0.8);
   text-shadow:
-    0 0 10px rgba(193, 140, 88, 0.055),
+    0 0 10px rgba(193, 140, 88, 0.05),
     0 14px 34px rgba(0, 0, 0, 0.64);
 }
 
-/* アクセシビリティ用 */
 .srOnly {
   position: absolute;
   width: 1px;
@@ -260,11 +246,11 @@
 /* Tablet */
 @media (max-width: 1100px) {
   .axisHeading {
-    left: clamp(88px, 13vw, 160px);
+    left: clamp(86px, 12.5vw, 154px);
   }
 
   .axisReveal {
-    width: clamp(82px, 8vw, 116px);
+    width: clamp(80px, 7.8vw, 112px);
     height: clamp(500px, 72vh, 720px);
   }
 
@@ -274,40 +260,40 @@
   }
 
   .copyBlock {
-    right: clamp(72px, 8vw, 140px);
-    width: min(36vw, 440px);
+    right: clamp(70px, 7.5vw, 132px);
+    width: min(37vw, 440px);
   }
 
   .copyTitle {
-    font-size: clamp(38px, 4.5vw, 66px);
+    font-size: clamp(37px, 4.35vw, 64px);
   }
 
   .copyLine {
-    font-size: clamp(13px, 1.25vw, 17px);
+    font-size: clamp(13px, 1.18vw, 16px);
   }
 
   .line02 {
-    margin-top: 34px;
+    margin-top: 30px;
   }
 
   .line03 {
-    margin-top: 38px;
+    margin-top: 32px;
   }
 
   .line04 {
-    margin-top: 72px;
+    margin-top: 62px;
   }
 }
 
 /* Small Tablet */
 @media (max-width: 900px) {
   .axisHeading {
-    left: clamp(54px, 10vw, 92px);
+    left: clamp(50px, 9vw, 86px);
     top: 56%;
   }
 
   .axisReveal {
-    width: clamp(70px, 8vw, 96px);
+    width: clamp(68px, 7.8vw, 92px);
     height: clamp(440px, 66vh, 620px);
   }
 
@@ -318,13 +304,18 @@
   }
 
   .copyBlock {
-    right: clamp(42px, 6vw, 84px);
+    right: clamp(38px, 5.5vw, 78px);
     top: 52%;
     width: min(42vw, 350px);
   }
 
+  .kicker {
+    margin-bottom: 18px;
+    font-size: 0.58rem;
+  }
+
   .copyTitle {
-    font-size: clamp(34px, 4.8vw, 54px);
+    font-size: clamp(33px, 4.65vw, 52px);
     line-height: 1;
   }
 
@@ -333,21 +324,22 @@
   }
 
   .copyLine {
-    font-size: clamp(12px, 1.65vw, 15px);
-    line-height: 1.85;
-    letter-spacing: 0.06em;
+    font-size: clamp(12px, 1.55vw, 15px);
+    line-height: 1.88;
+    letter-spacing: 0.045em;
   }
 
   .line02 {
-    margin-top: 24px;
+    margin-top: 22px;
   }
 
   .line03 {
-    margin-top: 28px;
+    margin-top: 24px;
   }
 
   .line04 {
-    margin-top: 54px;
+    margin-top: 46px;
+    padding-top: 18px;
   }
 }
 
@@ -359,12 +351,12 @@
   }
 
   .axisHeading {
-    left: 34px;
+    left: 28px;
     top: 48%;
   }
 
   .axisReveal {
-    width: clamp(54px, 14vw, 74px);
+    width: clamp(52px, 13.5vw, 70px);
     height: clamp(340px, 58vh, 500px);
   }
 
@@ -373,52 +365,60 @@
   }
 
   .dividerLine {
-    left: 34%;
+    left: 33%;
     top: 52%;
     height: clamp(220px, 36vh, 360px);
-    opacity: 0.48;
+    opacity: 0.46;
   }
 
   .copyBlock {
-    right: 22px;
+    right: 20px;
     top: 54%;
-    width: min(58vw, 280px);
+    width: min(59vw, 284px);
   }
 
   .copyBlock::before {
-    top: -90px;
-    right: -52px;
-    width: 240px;
-    height: 300px;
-    opacity: 0.36;
+    top: -88px;
+    right: -48px;
+    width: 238px;
+    height: 296px;
+    opacity: 0.32;
+  }
+
+  .kicker {
+    margin-bottom: 15px;
+    font-size: 0.52rem;
+    letter-spacing: 0.13em;
   }
 
   .copyTitle {
-    font-size: clamp(30px, 8.5vw, 48px);
+    font-size: clamp(29px, 8.2vw, 46px);
     line-height: 1;
+    letter-spacing: -0.014em;
   }
 
   .copyLines {
-    margin-top: 32px;
+    margin-top: 31px;
   }
 
   .copyLine {
     font-size: 12px;
-    line-height: 1.95;
-    letter-spacing: 0.045em;
+    line-height: 1.92;
+    letter-spacing: 0.032em;
   }
 
   .line02 {
-    margin-top: 20px;
+    margin-top: 18px;
   }
 
   .line03 {
-    margin-top: 22px;
+    margin-top: 20px;
   }
 
   .line04 {
-    margin-top: 44px;
-    font-size: 13px;
+    margin-top: 38px;
+    padding-top: 16px;
+    font-size: 12.5px;
   }
 }
 

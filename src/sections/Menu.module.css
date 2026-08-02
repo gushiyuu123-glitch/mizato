@@ -1,0 +1,751 @@
+/* src/sections/Menu.module.css */
+
+.menu {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: #050403;
+  color: rgba(243, 234, 216, 0.9);
+}
+
+.menu::before {
+  content: "";
+  position: absolute;
+  inset: -3%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    url("/images/menu-bg.jpeg")
+    center 46% / cover no-repeat;
+  opacity: 0.34;
+  filter:
+    saturate(0.72)
+    brightness(0.82)
+    contrast(1.08);
+  transform: scale(1.035);
+}
+
+/*
+  写真を見せすぎず、左の導入文と本の可読性を守る膜。
+  黒一色には戻さず、棚と琥珀の気配だけ残す。
+*/
+.menu::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 4, 3, 0.82) 0%,
+      rgba(5, 4, 3, 0.58) 18%,
+      rgba(5, 4, 3, 0.28) 43%,
+      rgba(5, 4, 3, 0.28) 72%,
+      rgba(5, 4, 3, 0.62) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.68) 0%,
+      rgba(5, 4, 3, 0.2) 29%,
+      rgba(5, 4, 3, 0.26) 69%,
+      rgba(5, 4, 3, 0.74) 100%
+    ),
+    radial-gradient(
+      circle at 68% 48%,
+      rgba(153, 88, 40, 0.08),
+      transparent 35rem
+    );
+}
+
+.intro {
+  position: absolute;
+  left: clamp(28px, 5vw, 88px);
+  top: clamp(108px, 17svh, 166px);
+  z-index: 4;
+  width: min(19vw, 310px);
+  pointer-events: none;
+}
+
+.introTitle {
+  margin: 0;
+  line-height: 1;
+}
+
+.introTitleReveal {
+  position: relative;
+  display: block;
+  width: clamp(220px, 18.5vw, 310px);
+  overflow: hidden;
+}
+
+.introTitleImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.88;
+  filter:
+    drop-shadow(0 0 10px rgba(214, 149, 80, 0.08))
+    drop-shadow(0 18px 40px rgba(0, 0, 0, 0.62));
+  will-change: opacity, transform, filter;
+}
+
+.introEnglish {
+  margin: clamp(24px, 2.4vw, 36px) 0 0;
+  color: rgba(243, 234, 216, 0.54);
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: clamp(0.9rem, 1.08vw, 1.15rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: 0.012em;
+  text-shadow: 0 12px 30px rgba(0, 0, 0, 0.58);
+  will-change: opacity, transform, filter;
+}
+
+.introCopy {
+  margin: 12px 0 0;
+  color: rgba(243, 234, 216, 0.46);
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
+  font-size: clamp(0.68rem, 0.78vw, 0.82rem);
+  line-height: 1.8;
+  letter-spacing: 0.065em;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.56);
+  will-change: opacity, transform, filter;
+}
+
+.bookStage {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100svh;
+  padding: 11svh 5vw 7svh;
+  perspective: 2200px;
+}
+
+.book {
+  position: relative;
+  left: clamp(54px, 5.4vw, 104px);
+  width: min(76vw, 1080px);
+  aspect-ratio: 1.58;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.bookShadow {
+  position: absolute;
+  left: 7%;
+  right: 2%;
+  bottom: -7%;
+  z-index: -1;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.72);
+  filter: blur(32px);
+  transform: rotateX(74deg);
+  opacity: 0.78;
+}
+
+.bookBase {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  transform: translateZ(-8px);
+}
+
+.baseLeft,
+.baseRight {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 244, 222, 0.038),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #17100b 0%,
+      #0f0a07 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 234, 216, 0.035),
+    inset 0 0 70px rgba(0, 0, 0, 0.52);
+}
+
+.baseLeft {
+  border-radius: 12px 0 0 12px;
+}
+
+.baseRight {
+  border-radius: 0 12px 12px 0;
+}
+
+.cover,
+.pageSheet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.cover {
+  z-index: 50;
+}
+
+.coverFace,
+.pageFace {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.coverFront {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 12px 12px 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 238, 207, 0.035),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 42% 34%,
+      rgba(120, 64, 29, 0.18),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #1b110c 0%,
+      #0b0705 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(214, 149, 80, 0.12),
+    inset 18px 0 32px rgba(0, 0, 0, 0.36),
+    22px 26px 64px rgba(0, 0, 0, 0.56);
+}
+
+.coverFront::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(193, 140, 88, 0.13);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.coverEyebrow {
+  color: rgba(193, 140, 88, 0.62);
+  font-family: "Times New Roman", serif;
+  font-size: clamp(0.56rem, 0.68vw, 0.72rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.coverLogo {
+  margin-top: clamp(22px, 2.5vw, 36px);
+  color: rgba(229, 197, 154, 0.78);
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: clamp(3.2rem, 6vw, 7rem);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;
+  text-shadow:
+    0 0 18px rgba(185, 120, 60, 0.08),
+    0 24px 54px rgba(0, 0, 0, 0.66);
+}
+
+.coverMeta {
+  margin-top: clamp(28px, 3vw, 42px);
+  color: rgba(243, 234, 216, 0.4);
+  font-family: "Times New Roman", serif;
+  font-size: clamp(0.62rem, 0.72vw, 0.76rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.coverBack {
+  display: grid;
+  place-content: center;
+  padding: 9%;
+  border-radius: 12px 0 0 12px;
+  background:
+    linear-gradient(
+      245deg,
+      rgba(255, 238, 207, 0.03),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      #15100c 0%,
+      #0d0907 100%
+    );
+  box-shadow:
+    inset -18px 0 34px rgba(0, 0, 0, 0.38),
+    inset 0 0 0 1px rgba(243, 234, 216, 0.035);
+  transform: rotateY(180deg);
+}
+
+.coverBackLine {
+  display: block;
+  width: 46px;
+  height: 1px;
+  margin: 0 0 28px auto;
+  background: rgba(193, 140, 88, 0.36);
+}
+
+.coverBackCopy {
+  margin: 0;
+  color: rgba(243, 234, 216, 0.42);
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: clamp(1.5rem, 2.7vw, 3rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.08;
+  text-align: right;
+}
+
+.pageSheet {
+  z-index: 10;
+}
+
+.pageSheet[data-page-index="0"] {
+  z-index: 30;
+}
+
+.pageSheet[data-page-index="1"] {
+  z-index: 20;
+}
+
+.pageSheet[data-page-index="2"] {
+  z-index: 10;
+}
+
+.pageFront,
+.pageBack {
+  padding: clamp(30px, 4vw, 66px);
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255, 247, 229, 0.045),
+      transparent 29%
+    ),
+    radial-gradient(
+      circle at 64% 26%,
+      rgba(127, 75, 40, 0.07),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #1a1410 0%,
+      #110d0a 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 234, 216, 0.04),
+    inset 18px 0 32px rgba(0, 0, 0, 0.24),
+    14px 18px 38px rgba(0, 0, 0, 0.32);
+}
+
+.pageFront {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 10px 10px 0;
+}
+
+.pageBack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-radius: 10px 0 0 10px;
+  transform: rotateY(180deg);
+  text-align: right;
+}
+
+.pageHeader {
+  position: relative;
+}
+
+.pageJapanese {
+  margin: 0 0 20px;
+  color: rgba(193, 140, 88, 0.56);
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
+  font-size: clamp(0.62rem, 0.72vw, 0.76rem);
+  letter-spacing: 0.16em;
+}
+
+.pageTitle {
+  margin: 0;
+  color: rgba(241, 231, 222, 0.86);
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: clamp(3rem, 5.5vw, 6.6rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  text-shadow: 0 18px 42px rgba(0, 0, 0, 0.58);
+  will-change: opacity, transform, filter;
+}
+
+.pagePhrase {
+  margin: clamp(22px, 2.5vw, 36px) 0 0;
+  color: rgba(243, 234, 216, 0.48);
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
+  font-size: clamp(0.68rem, 0.82vw, 0.86rem);
+  letter-spacing: 0.055em;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.2vw, 32px);
+  margin-top: auto;
+  padding-top: clamp(42px, 5vw, 76px);
+}
+
+.menuRow {
+  display: grid;
+  grid-template-columns: auto minmax(18px, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(10px, 1.2vw, 18px);
+  min-width: 0;
+  will-change: opacity, transform;
+}
+
+.itemName {
+  min-width: 0;
+  color: rgba(243, 234, 216, 0.72);
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
+  font-size: clamp(0.76rem, 0.94vw, 1rem);
+  font-weight: 300;
+  letter-spacing: 0.045em;
+  white-space: nowrap;
+}
+
+.itemRule {
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(243, 234, 216, 0.035),
+      rgba(193, 140, 88, 0.16),
+      rgba(243, 234, 216, 0.025)
+    );
+}
+
+.itemPrice {
+  color: rgba(243, 234, 216, 0.48);
+  font-family: "Times New Roman", "Yu Mincho", serif;
+  font-size: clamp(0.7rem, 0.82vw, 0.88rem);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.pageNote {
+  margin: clamp(30px, 3.2vw, 48px) 0 0;
+  color: rgba(243, 234, 216, 0.31);
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
+  font-size: clamp(0.58rem, 0.67vw, 0.7rem);
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+}
+
+.backCategory {
+  margin: 0;
+  color: rgba(243, 234, 216, 0.14);
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: clamp(3rem, 6.8vw, 8rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.84;
+  letter-spacing: -0.04em;
+}
+
+.backLine {
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin: 30px 0 24px;
+  background: rgba(193, 140, 88, 0.22);
+}
+
+.backCopy {
+  max-width: 22rem;
+  margin: 0;
+  color: rgba(243, 234, 216, 0.3);
+  font-family: "Times New Roman", serif;
+  font-size: clamp(0.66rem, 0.82vw, 0.86rem);
+  line-height: 1.8;
+  letter-spacing: 0.08em;
+}
+
+.spine {
+  position: absolute;
+  top: 1.5%;
+  bottom: 1.5%;
+  left: 50%;
+  z-index: 60;
+  width: 1px;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(193, 140, 88, 0.2) 16%,
+      rgba(243, 234, 216, 0.08) 50%,
+      rgba(193, 140, 88, 0.18) 84%,
+      transparent
+    );
+  box-shadow:
+    -8px 0 18px rgba(0, 0, 0, 0.42),
+    8px 0 18px rgba(0, 0, 0, 0.42);
+}
+
+.scrollHint {
+  position: absolute;
+  right: clamp(24px, 4vw, 72px);
+  bottom: clamp(24px, 4svh, 54px);
+  z-index: 5;
+  margin: 0;
+  color: rgba(243, 234, 216, 0.28);
+  font-family: "Times New Roman", serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .book {
+    left: clamp(20px, 3vw, 38px);
+    width: min(84vw, 900px);
+  }
+
+  .intro {
+    left: 34px;
+    top: clamp(92px, 14svh, 128px);
+    width: min(22vw, 250px);
+  }
+
+  .introTitleReveal {
+    width: clamp(188px, 21vw, 250px);
+  }
+
+  .introEnglish {
+    margin-top: 24px;
+    font-size: clamp(0.82rem, 1.25vw, 1rem);
+  }
+
+  .introCopy {
+    font-size: clamp(0.64rem, 0.9vw, 0.76rem);
+  }
+
+  .pageFront,
+  .pageBack {
+    padding: clamp(26px, 3.6vw, 48px);
+  }
+
+  .pageTitle {
+    font-size: clamp(2.6rem, 5.6vw, 5.2rem);
+  }
+}
+
+/* SP / static fallback */
+@media (max-width: 767px) {
+  .menu {
+    min-height: auto;
+    overflow: visible;
+    padding: 12svh 0 16svh;
+  }
+
+  .menu::before {
+    inset: 0;
+    background-position: 52% center;
+    opacity: 0.25;
+    filter:
+      saturate(0.68)
+      brightness(0.7)
+      contrast(1.08);
+    transform: none;
+  }
+
+  .menu::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 4, 3, 0.78) 0%,
+        rgba(5, 4, 3, 0.42) 24%,
+        rgba(5, 4, 3, 0.38) 72%,
+        rgba(5, 4, 3, 0.82) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(5, 4, 3, 0.42),
+        rgba(5, 4, 3, 0.2),
+        rgba(5, 4, 3, 0.42)
+      );
+  }
+
+  .intro {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    padding: 0 22px;
+  }
+
+  .introTitleReveal {
+    width: clamp(190px, 57vw, 270px);
+  }
+
+  .introEnglish {
+    margin-top: 24px;
+    font-size: clamp(0.92rem, 4.1vw, 1.08rem);
+  }
+
+  .introCopy {
+    margin-top: 11px;
+    font-size: 0.72rem;
+  }
+
+  .bookStage {
+    display: block;
+    min-height: auto;
+    padding: 9svh 18px 0;
+    perspective: none;
+  }
+
+  .book {
+    left: 0;
+    width: 100%;
+    aspect-ratio: auto;
+    transform: none !important;
+  }
+
+  .bookShadow,
+  .bookBase,
+  .spine {
+    display: none;
+  }
+
+  .cover,
+  .pageSheet {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    transform-style: flat;
+  }
+
+  .cover {
+    min-height: 58svh;
+    margin-bottom: 8svh;
+  }
+
+  .coverFace,
+  .pageFace {
+    position: relative;
+    inset: auto;
+    backface-visibility: visible;
+  }
+
+  .coverFront {
+    min-height: 58svh;
+    border-radius: 10px;
+  }
+
+  .coverBack,
+  .pageBack {
+    display: none;
+  }
+
+  .pageSheet {
+    margin-top: 7svh;
+  }
+
+  .pageFront {
+    min-height: 74svh;
+    padding: 34px 26px 32px;
+    border-radius: 10px;
+  }
+
+  .pageJapanese {
+    margin-bottom: 18px;
+  }
+
+  .pageTitle {
+    font-size: clamp(3.6rem, 18vw, 5.6rem);
+  }
+
+  .pagePhrase {
+    margin-top: 24px;
+  }
+
+  .menuList {
+    gap: 24px;
+    padding-top: 56px;
+  }
+
+  .itemName {
+    font-size: 0.82rem;
+  }
+
+  .itemPrice {
+    font-size: 0.74rem;
+  }
+
+  .pageNote {
+    margin-top: 44px;
+  }
+
+  .scrollHint {
+    display: none;
+  }
+}
+
+[data-menu-static="true"] .book {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book,
+  .cover,
+  .pageSheet,
+  .pageTitle,
+  .menuRow {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}

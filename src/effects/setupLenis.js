@@ -8,48 +8,188 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const NOOP = () => {};
+
 export function setupLenis() {
-  if (typeof window === "undefined") return () => {};
-
-  const reduceMotion =
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
-
-  const isMobile =
-    window.matchMedia?.("(max-width: 767px)")?.matches ?? false;
-
-  // SP / reduced-motion はネイティブスクロール
-  if (reduceMotion || isMobile) {
-    document.documentElement.classList.remove("has-lenis");
-    return () => {};
+  if (
+    typeof window === "undefined" ||
+    typeof document === "undefined"
+  ) {
+    return NOOP;
   }
 
-  document.documentElement.classList.add("has-lenis");
+  const root = document.documentElement;
 
-  const lenis = new Lenis({
-    duration: 1.22,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-    wheelMultiplier: 0.86,
-    touchMultiplier: 1,
-    anchors: true,
-  });
+  const reduceMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
 
-  lenis.on("scroll", ScrollTrigger.update);
+  const mobileQuery = window.matchMedia(
+    "(max-width: 767px)"
+  );
+
+  let lenis = null;
+  let refreshFrame = 0;
+
+  const shouldUseNativeScroll = () => {
+    return reduceMotionQuery.matches || mobileQuery.matches;
+  };
+
+  const scheduleRefresh = () => {
+    if (refreshFrame) {
+      window.cancelAnimationFrame(refreshFrame);
+    }
+
+    refreshFrame = window.requestAnimationFrame(() => {
+      refreshFrame = 0;
+      ScrollTrigger.refresh();
+    });
+  };
+
+  const handleLenisScroll = () => {
+    ScrollTrigger.update();
+  };
 
   const updateLenis = (time) => {
+    if (!lenis) return;
+
     lenis.raf(time * 1000);
   };
 
-  gsap.ticker.add(updateLenis);
-  gsap.ticker.lagSmoothing(0);
+  const startLenis = () => {
+    if (lenis || shouldUseNativeScroll()) {
+      return;
+    }
 
-  requestAnimationFrame(() => {
-    ScrollTrigger.refresh();
-  });
+    root.classList.add("has-lenis");
+
+    lenis = new Lenis({
+      duration: 1.22,
+
+      easing: (t) =>
+        Math.min(
+          1,
+          1.001 - Math.pow(2, -10 * t)
+        ),
+
+      smoothWheel: true,
+      wheelMultiplier: 0.86,
+      touchMultiplier: 1,
+      anchors: true,
+
+      /*
+        GSAP側のtickerで動かすため、
+        Lenis自身のRAFは使用しない。
+      */
+      autoRaf: false,
+    });
+
+    lenis.on(
+      "scroll",
+      handleLenisScroll
+    );
+
+    gsap.ticker.add(updateLenis);
+
+    scheduleRefresh();
+  };
+
+  const stopLenis = ({
+    refresh = true,
+  } = {}) => {
+    if (refreshFrame) {
+      window.cancelAnimationFrame(
+        refreshFrame
+      );
+
+      refreshFrame = 0;
+    }
+
+    gsap.ticker.remove(updateLenis);
+
+    if (lenis) {
+      lenis.off?.(
+        "scroll",
+        handleLenisScroll
+      );
+
+      lenis.destroy();
+      lenis = null;
+    }
+
+    root.classList.remove("has-lenis");
+
+    if (refresh) {
+      scheduleRefresh();
+    }
+  };
+
+  const syncScrollMode = () => {
+    if (shouldUseNativeScroll()) {
+      stopLenis();
+      return;
+    }
+
+    startLenis();
+  };
+
+  const addMediaListener = (
+    mediaQuery,
+    listener
+  ) => {
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener(
+        "change",
+        listener
+      );
+
+      return;
+    }
+
+    mediaQuery.addListener?.(listener);
+  };
+
+  const removeMediaListener = (
+    mediaQuery,
+    listener
+  ) => {
+    if (mediaQuery.removeEventListener) {
+      mediaQuery.removeEventListener(
+        "change",
+        listener
+      );
+
+      return;
+    }
+
+    mediaQuery.removeListener?.(listener);
+  };
+
+  addMediaListener(
+    reduceMotionQuery,
+    syncScrollMode
+  );
+
+  addMediaListener(
+    mobileQuery,
+    syncScrollMode
+  );
+
+  syncScrollMode();
 
   return () => {
-    gsap.ticker.remove(updateLenis);
-    lenis.destroy();
-    document.documentElement.classList.remove("has-lenis");
+    removeMediaListener(
+      reduceMotionQuery,
+      syncScrollMode
+    );
+
+    removeMediaListener(
+      mobileQuery,
+      syncScrollMode
+    );
+
+    stopLenis({
+      refresh: false,
+    });
   };
 }

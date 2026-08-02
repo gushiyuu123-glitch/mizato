@@ -22,7 +22,8 @@
   pointer-events: none;
   overflow: hidden;
   background: var(--bg-deep);
-  transform: translate3d(0, var(--hero-bg-y), 0)
+  transform:
+    translate3d(0, var(--hero-bg-y), 0)
     scale(var(--hero-bg-scale));
   transform-origin: center center;
   will-change: transform;
@@ -34,10 +35,7 @@
   height: 100%;
 }
 
-/*
-  最終仕上げの極薄レイヤー。
-  画像に膜をかけず、右側の文字エリアだけほんの少し沈める。
-*/
+/* 右側の文字エリアだけを静かに沈める */
 .hero::before {
   content: "";
   position: absolute;
@@ -61,10 +59,7 @@
     );
 }
 
-/*
-  外周の締めだけを極薄で残す。
-  濁りではなく、画面端の落ち着き用。
-*/
+/* 外周の締め */
 .hero::after {
   content: "";
   position: absolute;
@@ -85,11 +80,11 @@
   position: relative;
   z-index: 2;
   justify-self: end;
-  width: min(720px, 100%);
-  margin-right: 7vw;
+  width: min(700px, 100%);
+  margin-right: 6.5vw;
   text-align: center;
   opacity: var(--hero-text-opacity);
-  transform: translate3d(0, calc(-6.8vh + var(--hero-text-y)), 0);
+  transform: translate3d(0, calc(-5.8vh + var(--hero-text-y)), 0);
   will-change: transform, opacity;
 }
 
@@ -105,10 +100,12 @@
 }
 
 .eyebrow {
-  margin: 0 0 24px;
-  color: rgba(193, 138, 74, 0.84);
-  font-size: clamp(0.6rem, 0.82vw, 0.72rem);
-  letter-spacing: 0.2em;
+  margin: 0 0 27px;
+  color: rgba(207, 148, 82, 0.9);
+  font-family: "Times New Roman", "Yu Mincho", serif;
+  font-size: clamp(0.66rem, 0.72vw, 0.78rem);
+  line-height: 1.4;
+  letter-spacing: 0.13em;
   font-kerning: normal;
   text-shadow: 0 8px 30px rgba(0, 0, 0, 0.72);
   animation-delay: 720ms;
@@ -122,13 +119,14 @@
   opacity: 0;
   filter: blur(4px);
   transform: translateY(10px);
-  animation: logoFrameReveal 760ms cubic-bezier(0.22, 1, 0.36, 1) 840ms forwards;
+  animation:
+    logoFrameReveal 760ms cubic-bezier(0.22, 1, 0.36, 1) 840ms forwards;
 }
 
 .logoMark {
   position: relative;
   display: inline-block;
-  width: clamp(270px, 42vw, 620px);
+  width: clamp(280px, 41vw, 610px);
   max-width: 100%;
   overflow: hidden;
   vertical-align: top;
@@ -154,7 +152,8 @@
   opacity: 0;
   transform: translateX(0) skewX(-15deg);
   mix-blend-mode: screen;
-  animation: logoTrace 1750ms cubic-bezier(0.22, 1, 0.36, 1) 920ms forwards;
+  animation:
+    logoTrace 1750ms cubic-bezier(0.22, 1, 0.36, 1) 920ms forwards;
 }
 
 .logoImage {
@@ -167,15 +166,17 @@
     drop-shadow(0 0 10px rgba(224, 161, 95, 0.12))
     drop-shadow(0 0 26px rgba(155, 106, 54, 0.08))
     drop-shadow(0 14px 42px rgba(0, 0, 0, 0.88));
-  animation: logoDraw 1750ms cubic-bezier(0.22, 1, 0.36, 1) 920ms forwards;
+  animation:
+    logoDraw 1750ms cubic-bezier(0.22, 1, 0.36, 1) 920ms forwards;
 }
 
 .copy {
-  margin: 42px 0 0;
-  color: rgba(243, 234, 216, 0.93);
-  font-size: clamp(1.22rem, 2.28vw, 2.04rem);
-  line-height: 1.68;
-  letter-spacing: 0.04em;
+  margin: 50px 0 0;
+  color: rgba(243, 234, 216, 0.94);
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: clamp(1.18rem, 1.78vw, 1.72rem);
+  line-height: 1.62;
+  letter-spacing: 0.025em;
   font-kerning: normal;
   text-shadow:
     0 8px 24px rgba(0, 0, 0, 0.84),
@@ -185,26 +186,26 @@
 
 .lead {
   width: min(500px, 100%);
-  margin: 25px auto 0;
-  color: rgba(243, 234, 216, 0.56);
-  font-size: clamp(0.78rem, 0.96vw, 0.88rem);
-  line-height: 2.05;
-  letter-spacing: 0.034em;
+  margin: 29px auto 0;
+  color: rgba(243, 234, 216, 0.67);
+  font-size: clamp(0.8rem, 0.92vw, 0.9rem);
+  line-height: 2.08;
+  letter-spacing: 0.025em;
   font-kerning: normal;
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.82);
   animation-delay: 2220ms;
 }
 
-/* OPEN情報は画像の上ではなく、文字群の中に入れる */
 .openMeta {
   position: relative;
   display: inline-block;
-  margin: 36px auto 0;
+  margin: 39px auto 0;
   padding-top: 20px;
-  color: rgba(243, 234, 216, 0.42);
+  color: rgba(243, 234, 216, 0.58);
   font-family: "Times New Roman", "Yu Mincho", serif;
-  font-size: clamp(0.62rem, 0.75vw, 0.72rem);
-  letter-spacing: 0.18em;
+  font-size: clamp(0.66rem, 0.7vw, 0.76rem);
+  line-height: 1.4;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   text-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
   animation-delay: 2400ms;
@@ -217,26 +218,28 @@
   left: 50%;
   width: 72px;
   height: 1px;
-  background: rgba(193, 138, 74, 0.3);
+  background: rgba(193, 138, 74, 0.42);
   transform: translateX(-50%);
 }
 
-/* CTAは上で細く見せる */
+/* CTA */
 .reserveLink {
   position: absolute;
   right: 48px;
   top: 40px;
   z-index: 2;
-  color: rgba(243, 234, 216, 0.5);
+  color: rgba(243, 234, 216, 0.58);
   font-family: "Times New Roman", "Yu Mincho", serif;
   font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  line-height: 1.4;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
   opacity: 0;
   transition:
     color 260ms ease,
     transform 260ms ease;
-  animation: metaReveal 1100ms cubic-bezier(0.22, 1, 0.36, 1) 2540ms forwards;
+  animation:
+    metaReveal 1100ms cubic-bezier(0.22, 1, 0.36, 1) 2540ms forwards;
 }
 
 .reserveLink::after {
@@ -246,19 +249,24 @@
   right: 0;
   bottom: -8px;
   height: 1px;
-  background: rgba(193, 138, 74, 0.52);
+  background: rgba(193, 138, 74, 0.56);
   transform: scaleX(0.42);
   transform-origin: left;
   transition: transform 260ms ease;
 }
 
 .reserveLink:hover {
-  color: rgba(243, 234, 216, 0.86);
+  color: rgba(243, 234, 216, 0.9);
   transform: translateY(-1px);
 }
 
 .reserveLink:hover::after {
   transform: scaleX(1);
+}
+
+.reserveLink:focus-visible {
+  outline: 1px solid rgba(214, 149, 80, 0.72);
+  outline-offset: 10px;
 }
 
 .srOnly {
@@ -347,12 +355,12 @@
 
 @media (max-width: 1100px) {
   .inner {
-    width: min(660px, 100%);
-    margin-right: 5vw;
+    width: min(650px, 100%);
+    margin-right: 4.5vw;
   }
 
   .logoMark {
-    width: clamp(260px, 43vw, 560px);
+    width: clamp(270px, 43vw, 560px);
   }
 }
 
@@ -428,9 +436,9 @@
   }
 
   .eyebrow {
-    margin-bottom: 21px;
-    font-size: 0.54rem;
-    letter-spacing: 0.16em;
+    margin-bottom: 22px;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
     animation-delay: 620ms;
   }
 
@@ -442,35 +450,35 @@
     width: clamp(235px, 74vw, 390px);
   }
 
-  .logoImage {
-    animation-delay: 840ms;
-  }
-
+  .logoImage,
   .logoMark::after {
     animation-delay: 840ms;
   }
 
   .copy {
-    margin-top: 34px;
-    font-size: clamp(1.24rem, 5.9vw, 1.84rem);
-    letter-spacing: 0.034em;
+    margin-top: 38px;
+    font-size: clamp(1.2rem, 5.45vw, 1.68rem);
+    line-height: 1.58;
+    letter-spacing: 0.02em;
     animation-delay: 1800ms;
   }
 
   .lead {
     width: min(370px, 100%);
-    margin-top: 22px;
-    font-size: 0.76rem;
-    line-height: 2;
-    letter-spacing: 0.03em;
+    margin-top: 24px;
+    color: rgba(243, 234, 216, 0.68);
+    font-size: 0.78rem;
+    line-height: 2.04;
+    letter-spacing: 0.022em;
     animation-delay: 1960ms;
   }
 
   .openMeta {
-    margin-top: 30px;
+    margin-top: 32px;
     padding-top: 18px;
-    font-size: 0.6rem;
-    letter-spacing: 0.16em;
+    color: rgba(243, 234, 216, 0.6);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
     animation-delay: 2120ms;
   }
 
@@ -510,6 +518,6 @@
 
   .inner {
     opacity: 1;
-    transform: translate3d(0, -6.8vh, 0);
+    transform: translate3d(0, -5.8vh, 0);
   }
 }

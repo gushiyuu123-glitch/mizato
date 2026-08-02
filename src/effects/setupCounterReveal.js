@@ -1,16 +1,20 @@
-// src/effects/setupCounterReveal.js
-
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const NOOP = () => {};
+
 export function setupCounterReveal(counterElement) {
-  if (!counterElement) return () => {};
+  if (!counterElement || typeof window === "undefined") {
+    return NOOP;
+  }
 
   const axis = counterElement.querySelector("[data-counter-axis]");
 
-  if (!axis) return () => {};
+  if (!axis) {
+    return NOOP;
+  }
 
   const reduceMotion =
     window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
@@ -19,12 +23,21 @@ export function setupCounterReveal(counterElement) {
     counterElement.style.setProperty("--axis-trace-opacity", "0");
     counterElement.style.setProperty("--axis-trace-y", "115%");
 
-    axis.style.clipPath = "inset(0% 0% 0% 0%)";
-    axis.style.opacity = "1";
-    axis.style.filter = "none";
-    axis.style.transform = "translateY(0)";
+    gsap.set(axis, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      opacity: 1,
+      y: 0,
+      filter: "none",
+    });
 
-    return () => {};
+    return () => {
+      gsap.set(axis, {
+        clearProps: "all",
+      });
+
+      counterElement.style.removeProperty("--axis-trace-opacity");
+      counterElement.style.removeProperty("--axis-trace-y");
+    };
   }
 
   const ctx = gsap.context(() => {
@@ -40,26 +53,31 @@ export function setupCounterReveal(counterElement) {
       filter: "blur(6px)",
     });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: counterElement,
-        start: "top 66%",
-        once: true,
-      },
-    });
+    gsap
+      .timeline({
+        defaults: {
+          overwrite: "auto",
+        },
 
-    tl.to(
-      axis,
-      {
-        clipPath: "inset(0% 0% 0% 0%)",
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 2.05,
-        ease: "power3.out",
-      },
-      0
-    )
+        scrollTrigger: {
+          trigger: counterElement,
+          start: "top 66%",
+          once: true,
+          invalidateOnRefresh: true,
+        },
+      })
+      .to(
+        axis,
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 2.05,
+          ease: "power3.out",
+        },
+        0
+      )
       .to(
         counterElement,
         {
@@ -89,5 +107,16 @@ export function setupCounterReveal(counterElement) {
       );
   }, counterElement);
 
-  return () => ctx.revert();
+  const refreshId = window.requestAnimationFrame(() => {
+    ScrollTrigger.refresh();
+  });
+
+  return () => {
+    window.cancelAnimationFrame(refreshId);
+
+    ctx.revert();
+
+    counterElement.style.removeProperty("--axis-trace-opacity");
+    counterElement.style.removeProperty("--axis-trace-y");
+  };
 }

@@ -11,7 +11,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={heroRef} className={styles.hero}>
+    <section id="top" ref={heroRef} className={styles.hero} aria-labelledby="hero-title">
       <HeroLiquidCanvas
         className={styles.liquidCanvas}
         image="/images/hero-counter.jpeg"
@@ -27,11 +27,12 @@ export default function Hero() {
 
       <div className={styles.inner}>
         <p className={styles.eyebrow}>
-          Cocktail & Awamori / Matsuyama, Naha
+          Cocktail &amp; Awamori / Matsuyama, Naha
         </p>
 
-        <h1 className={styles.logo}>
+        <h1 id="hero-title" className={styles.logo}>
           <span className={styles.srOnly}>MIZATO</span>
+
           <span className={styles.logoMark} aria-hidden="true">
             <img
               className={styles.logoImage}

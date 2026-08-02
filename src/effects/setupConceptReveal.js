@@ -3,15 +3,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const NOOP = () => {};
+
 export function setupConceptReveal(conceptElement) {
-  if (!conceptElement) return () => {};
+  if (!conceptElement || typeof window === "undefined") {
+    return NOOP;
+  }
 
   const axis = conceptElement.querySelector("[data-concept-axis]");
   const divider = conceptElement.querySelector("[data-concept-divider]");
   const copy = conceptElement.querySelector("[data-concept-copy]");
-  const copyLines = conceptElement.querySelectorAll("[data-concept-copy-line]");
 
-  if (!axis) return () => {};
+  const copyLines = Array.from(
+    conceptElement.querySelectorAll("[data-concept-copy-line]")
+  );
+
+  if (!axis) {
+    return NOOP;
+  }
 
   const reduceMotion =
     window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
@@ -20,21 +29,46 @@ export function setupConceptReveal(conceptElement) {
     conceptElement.style.setProperty("--axis-trace-opacity", "0");
     conceptElement.style.setProperty("--axis-trace-y", "-115%");
 
-    axis.style.clipPath = "inset(0% 0% 0% 0%)";
-    axis.style.opacity = "1";
+    gsap.set(axis, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      opacity: 1,
+      clearProps: "filter,y",
+    });
 
     if (divider) {
-      divider.style.clipPath = "inset(0% 0% 0% 0%)";
-      divider.style.opacity = "1";
+      gsap.set(divider, {
+        clipPath: "inset(0% 0% 0% 0%)",
+        opacity: 1,
+      });
     }
 
     if (copy) {
-      copy.style.opacity = "1";
-      copy.style.filter = "none";
-      copy.style.transform = "translateY(-50%)";
+      gsap.set(copy, {
+        yPercent: -50,
+        y: 0,
+        opacity: 1,
+        filter: "none",
+      });
     }
 
-    return () => {};
+    if (copyLines.length) {
+      gsap.set(copyLines, {
+        y: 0,
+        opacity: 1,
+      });
+    }
+
+    return () => {
+      gsap.set(
+        [axis, divider, copy, ...copyLines].filter(Boolean),
+        {
+          clearProps: "all",
+        }
+      );
+
+      conceptElement.style.removeProperty("--axis-trace-opacity");
+      conceptElement.style.removeProperty("--axis-trace-y");
+    };
   }
 
   const ctx = gsap.context(() => {
@@ -71,23 +105,30 @@ export function setupConceptReveal(conceptElement) {
       });
     }
 
-    const tl = gsap.timeline({
+    const timeline = gsap.timeline({
+      defaults: {
+        overwrite: "auto",
+      },
+
       scrollTrigger: {
         trigger: conceptElement,
         start: "top 72%",
         once: true,
+        invalidateOnRefresh: true,
       },
     });
 
-    tl.to(
-      axis,
-      {
-        clipPath: "inset(0% 0% 0% 0%)",
-        duration: 1.75,
-        ease: "power3.out",
-      },
-      0
-    )
+    timeline
+      .to(
+        axis,
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          opacity: 1,
+          duration: 1.75,
+          ease: "power3.out",
+        },
+        0
+      )
       .to(
         conceptElement,
         {
@@ -117,7 +158,7 @@ export function setupConceptReveal(conceptElement) {
       );
 
     if (divider) {
-      tl.to(
+      timeline.to(
         divider,
         {
           clipPath: "inset(0% 0% 0% 0%)",
@@ -129,35 +170,46 @@ export function setupConceptReveal(conceptElement) {
       );
     }
 
-if (copy) {
-  tl.to(
-    copy,
-    {
-      yPercent: -50,
-      y: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-      duration: 1.05,
-      ease: "power3.out",
-    },
-    1.78
-  );
-}
+    if (copy) {
+      timeline.to(
+        copy,
+        {
+          yPercent: -50,
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.05,
+          ease: "power3.out",
+        },
+        1.78
+      );
+    }
 
-if (copyLines.length) {
-  tl.to(
-    copyLines,
-    {
-      y: 0,
-      opacity: 1,
-      duration: 0.72,
-      stagger: 0.11,
-      ease: "power3.out",
-    },
-    2.08
-  );
-}
+    if (copyLines.length) {
+      timeline.to(
+        copyLines,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.72,
+          stagger: 0.11,
+          ease: "power3.out",
+        },
+        2.08
+      );
+    }
   }, conceptElement);
 
-  return () => ctx.revert();
+  const refreshId = window.requestAnimationFrame(() => {
+    ScrollTrigger.refresh();
+  });
+
+  return () => {
+    window.cancelAnimationFrame(refreshId);
+
+    ctx.revert();
+
+    conceptElement.style.removeProperty("--axis-trace-opacity");
+    conceptElement.style.removeProperty("--axis-trace-y");
+  };
 }

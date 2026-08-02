@@ -5,46 +5,92 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function setupSignatureReveal(signatureElement) {
-  if (!signatureElement) return () => {};
+const NOOP = () => {};
 
-  const heading = signatureElement.querySelector("[data-signature-heading]");
-  const headingImage = heading?.querySelector("img");
-  const line = signatureElement.querySelector("[data-signature-line]");
-  const items = signatureElement.querySelectorAll("[data-signature-item]");
-  const parallaxImages = signatureElement.querySelectorAll(
-    "[data-signature-parallax]"
+export function setupSignatureReveal(signatureElement) {
+  if (!signatureElement || typeof window === "undefined") {
+    return NOOP;
+  }
+
+  const heading = signatureElement.querySelector(
+    "[data-signature-heading]"
   );
 
-  if (!heading || !headingImage) return () => {};
+  const headingImage = heading?.querySelector("img");
+
+  const line = signatureElement.querySelector(
+    "[data-signature-line]"
+  );
+
+  const items = Array.from(
+    signatureElement.querySelectorAll(
+      "[data-signature-item]"
+    )
+  );
+
+  const parallaxImages = Array.from(
+    signatureElement.querySelectorAll(
+      "[data-signature-parallax]"
+    )
+  );
+
+  if (!heading || !headingImage) {
+    return NOOP;
+  }
 
   const reduceMotion =
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    )?.matches ?? false;
 
   if (reduceMotion) {
-    heading.style.clipPath = "inset(0% 0% 0% 0%)";
-    heading.style.opacity = "1";
+    gsap.set(heading, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      opacity: 1,
+    });
 
-    headingImage.style.opacity = "1";
-    headingImage.style.transform = "translateX(0)";
-    headingImage.style.filter = "none";
+    gsap.set(headingImage, {
+      x: 0,
+      opacity: 1,
+      filter: "none",
+    });
 
     if (line) {
-      line.style.opacity = "1";
-      line.style.transform = "scaleX(1)";
+      gsap.set(line, {
+        scaleX: 1,
+        opacity: 0.72,
+      });
     }
 
-    items.forEach((item) => {
-      item.style.opacity = "1";
-      item.style.transform = "translateY(0)";
-      item.style.filter = "none";
-    });
+    if (items.length) {
+      gsap.set(items, {
+        y: 0,
+        opacity: 1,
+        filter: "none",
+      });
+    }
 
-    parallaxImages.forEach((image) => {
-      image.style.transform = "translate3d(0, 0, 0)";
-    });
+    if (parallaxImages.length) {
+      gsap.set(parallaxImages, {
+        yPercent: 0,
+        scale: 1,
+      });
+    }
 
-    return () => {};
+    return () => {
+      gsap.set(
+        [
+          heading,
+          headingImage,
+          line,
+          ...items,
+          ...parallaxImages,
+        ].filter(Boolean),
+        {
+          clearProps: "all",
+        }
+      );
+    };
   }
 
   const ctx = gsap.context(() => {
@@ -63,6 +109,7 @@ export function setupSignatureReveal(signatureElement) {
       gsap.set(line, {
         scaleX: 0,
         opacity: 0,
+        transformOrigin: "center center",
       });
     }
 
@@ -82,23 +129,30 @@ export function setupSignatureReveal(signatureElement) {
       });
     }
 
-    const revealTl = gsap.timeline({
+    const revealTimeline = gsap.timeline({
+      defaults: {
+        ease: "power3.out",
+        overwrite: "auto",
+      },
+
       scrollTrigger: {
         trigger: signatureElement,
         start: "top 72%",
         once: true,
-      },
-      defaults: {
-        ease: "power3.out",
+        invalidateOnRefresh: true,
       },
     });
 
-    revealTl
-      .to(heading, {
-        clipPath: "inset(0% 0% 0% 0%)",
-        opacity: 1,
-        duration: 1.35,
-      })
+    revealTimeline
+      .to(
+        heading,
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          opacity: 1,
+          duration: 1.35,
+        },
+        0
+      )
       .to(
         headingImage,
         {
@@ -107,23 +161,23 @@ export function setupSignatureReveal(signatureElement) {
           filter: "blur(0px)",
           duration: 1.15,
         },
-        "-=1.05"
+        0.3
       );
 
     if (line) {
-      revealTl.to(
+      revealTimeline.to(
         line,
         {
           scaleX: 1,
           opacity: 0.72,
           duration: 0.9,
         },
-        "-=0.15"
+        1.45
       );
     }
 
     if (items.length) {
-      revealTl.to(
+      revealTimeline.to(
         items,
         {
           y: 0,
@@ -132,25 +186,48 @@ export function setupSignatureReveal(signatureElement) {
           duration: 1.05,
           stagger: 0.18,
         },
-        "+=0.28"
+        2.05
       );
     }
 
     parallaxImages.forEach((image, index) => {
-      const drift = index === 1 ? 4.5 : 6;
+      const item = image.closest(
+        "[data-signature-item]"
+      );
+
+      if (!item) {
+        return;
+      }
+
+      const drift =
+        index === 1 ? 4.5 : 6;
 
       gsap.to(image, {
         yPercent: drift,
         ease: "none",
+        overwrite: "auto",
+
         scrollTrigger: {
-          trigger: image.closest("[data-signature-item]"),
+          trigger: item,
           start: "top bottom",
           end: "bottom top",
           scrub: 1.25,
+          invalidateOnRefresh: true,
         },
       });
     });
   }, signatureElement);
 
-  return () => ctx.revert();
+  const refreshFrame =
+    window.requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
+  return () => {
+    window.cancelAnimationFrame(
+      refreshFrame
+    );
+
+    ctx.revert();
+  };
 }

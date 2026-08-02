@@ -1,15 +1,326 @@
 <!doctype html>
-<html lang="en">
+<html
+  lang="ja"
+  translate="no"
+  class="notranslate"
+>
   <head>
     <meta charset="UTF-8" />
-        <!-- Google翻訳を完全無効化 -->
-    <meta name="google" content="notranslate" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mizato</title>
+
+    <!-- ==================================
+         Viewport
+    ================================== -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <!-- ==================================
+         Title / Description
+    ================================== -->
+    <title>MIZATO｜那覇・松山のバー</title>
+
+    <meta
+      name="description"
+      content="沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを、落ち着いたカウンターで。営業時間、メニュー、アクセスをご案内します。"
+    />
+
+    <meta
+      name="author"
+      content="GUSHIKEN DESIGN"
+    />
+
+    <meta
+      name="creator"
+      content="GUSHIKEN DESIGN"
+    />
+
+    <meta
+      name="application-name"
+      content="MIZATO"
+    />
+
+    <meta
+      name="apple-mobile-web-app-title"
+      content="MIZATO"
+    />
+
+    <meta
+      name="format-detection"
+      content="telephone=no, email=no, address=no"
+    />
+
+    <meta
+      name="referrer"
+      content="strict-origin-when-cross-origin"
+    />
+
+    <!-- Google翻訳を無効化 -->
+    <meta
+      name="google"
+      content="notranslate"
+    />
+
+    <!-- ==================================
+         Search Engine
+    ================================== -->
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+
+    <meta
+      name="googlebot"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+
+    <link
+      rel="canonical"
+      href="https://mizato.vercel.app/"
+    />
+
+    <link
+      rel="author"
+      href="https://gushikendesign.com/"
+    />
+
+    <!-- ==================================
+         Browser Appearance
+    ================================== -->
+    <meta
+      name="theme-color"
+      content="#050403"
+    />
+
+    <meta
+      name="color-scheme"
+      content="dark"
+    />
+
+    <meta
+      name="mobile-web-app-capable"
+      content="yes"
+    />
+
+    <meta
+      name="apple-mobile-web-app-capable"
+      content="yes"
+    />
+
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <!-- ==================================
+         Favicon
+    ================================== -->
+    <link
+      rel="icon"
+      href="/favicon/favicon.ico"
+      sizes="any"
+    />
+
+    <link
+      rel="shortcut icon"
+      href="/favicon/favicon.ico"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+
+    <link
+      rel="manifest"
+      href="/favicon/site.webmanifest"
+    />
+
+    <!-- ==================================
+         Open Graph
+    ================================== -->
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:locale"
+      content="ja_JP"
+    />
+
+    <meta
+      property="og:site_name"
+      content="MIZATO"
+    />
+
+    <meta
+      property="og:title"
+      content="MIZATO｜那覇・松山のバー"
+    />
+
+    <meta
+      property="og:description"
+      content="表の那覇を、少し離れて。泡盛、ウイスキー、カクテルを楽しめる、那覇・松山のバー。"
+    />
+
+    <meta
+      property="og:url"
+      content="https://mizato.vercel.app/"
+    />
+
+    <meta
+      property="og:image"
+      content="https://mizato.vercel.app/ogp/mizato-ogp.png"
+    />
+
+    <meta
+      property="og:image:secure_url"
+      content="https://mizato.vercel.app/ogp/mizato-ogp.png"
+    />
+
+    <meta
+      property="og:image:type"
+      content="image/png"
+    />
+
+    <meta
+      property="og:image:width"
+      content="1536"
+    />
+
+    <meta
+      property="og:image:height"
+      content="1024"
+    />
+
+    <meta
+      property="og:image:alt"
+      content="那覇・松山の夜の街並みとバーMIZATO"
+    />
+
+    <!-- ==================================
+         X / Twitter
+    ================================== -->
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+
+    <meta
+      name="twitter:title"
+      content="MIZATO｜那覇・松山のバー"
+    />
+
+    <meta
+      name="twitter:description"
+      content="表の那覇を、少し離れて。泡盛、ウイスキー、カクテルを楽しめる、那覇・松山のバー。"
+    />
+
+    <meta
+      name="twitter:image"
+      content="https://mizato.vercel.app/ogp/mizato-ogp.png"
+    />
+
+    <meta
+      name="twitter:image:alt"
+      content="那覇・松山の夜の街並みとバーMIZATO"
+    />
+
+    <!-- ==================================
+         Structured Data
+    ================================== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://gushikendesign.com/#organization",
+            "name": "GUSHIKEN DESIGN",
+            "url": "https://gushikendesign.com/"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://mizato.vercel.app/#website",
+            "url": "https://mizato.vercel.app/",
+            "name": "MIZATO",
+            "alternateName": "ミザト",
+            "description": "沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを楽しめるバーです。",
+            "inLanguage": "ja-JP",
+            "creator": {
+              "@id": "https://gushikendesign.com/#organization"
+            },
+            "publisher": {
+              "@id": "https://gushikendesign.com/#organization"
+            }
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://mizato.vercel.app/#primaryimage",
+            "url": "https://mizato.vercel.app/ogp/mizato-ogp.png",
+            "contentUrl": "https://mizato.vercel.app/ogp/mizato-ogp.png",
+            "width": 1536,
+            "height": 1024,
+            "caption": "那覇・松山の夜の街並みとバーMIZATO"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://mizato.vercel.app/#webpage",
+            "url": "https://mizato.vercel.app/",
+            "name": "MIZATO｜那覇・松山のバー",
+            "description": "沖縄県那覇市松山のバー「MIZATO」。泡盛、ウイスキー、カクテルを、落ち着いたカウンターで。営業時間、メニュー、アクセスをご案内します。",
+            "isPartOf": {
+              "@id": "https://mizato.vercel.app/#website"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://mizato.vercel.app/#primaryimage"
+            },
+            "creator": {
+              "@id": "https://gushikendesign.com/#organization"
+            },
+            "publisher": {
+              "@id": "https://gushikendesign.com/#organization"
+            },
+            "copyrightHolder": {
+              "@id": "https://gushikendesign.com/#organization"
+            },
+            "inLanguage": "ja-JP"
+          }
+        ]
+      }
+    </script>
   </head>
-  <body>
+
+  <body
+    class="notranslate"
+    translate="no"
+  >
+    <noscript>
+      このWebサイトをご覧いただくには、
+      JavaScriptを有効にしてください。
+    </noscript>
+
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+    <script
+      type="module"
+      src="/src/main.jsx"
+    ></script>
   </body>
 </html>

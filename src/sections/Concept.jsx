@@ -10,8 +10,13 @@ export default function Concept() {
   }, []);
 
   return (
-    <section ref={conceptRef} className={styles.concept} id="concept">
-      <h2 className={styles.axisHeading}>
+    <section
+      ref={conceptRef}
+      className={styles.concept}
+      id="concept"
+      aria-labelledby="concept-title"
+    >
+      <h2 id="concept-title" className={styles.axisHeading}>
         <span className={styles.srOnly}>Take a Seat</span>
 
         <span className={styles.axisReveal} aria-hidden="true">
@@ -31,6 +36,8 @@ export default function Concept() {
       />
 
       <div className={styles.copyBlock} data-concept-copy>
+        <p className={styles.kicker}>A quieter side of Naha</p>
+
         <h3 className={styles.copyTitle}>
           After the noise,
           <br />
