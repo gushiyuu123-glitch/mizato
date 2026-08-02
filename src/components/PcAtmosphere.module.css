@@ -25,13 +25,13 @@
         var(--pc-tone-r, 222)
         var(--pc-tone-g, 145)
         var(--pc-tone-b, 76)
-        / calc(var(--pc-tone-strength, 0.18) * 0.42)
+        / var(--pc-tone-soft, 0.0756)
       ) 0%,
       rgb(
         var(--pc-tone-r, 222)
         var(--pc-tone-g, 145)
         var(--pc-tone-b, 76)
-        / calc(var(--pc-tone-strength, 0.18) * 0.12)
+        / var(--pc-tone-faint, 0.0216)
       ) 34%,
       transparent 74%
     );
@@ -47,7 +47,7 @@
 .horizonLight {
   top: auto;
   height: 24vh;
-  opacity: calc(0.17 + var(--pc-scroll-progress, 0) * 0.12);
+  opacity: var(--pc-horizon-opacity, 0.17);
   background:
     radial-gradient(
       ellipse at 50% 108%,
@@ -55,13 +55,13 @@
         var(--pc-tone-r, 222)
         var(--pc-tone-g, 145)
         var(--pc-tone-b, 76)
-        / calc(var(--pc-tone-strength, 0.18) * 0.4)
+        / var(--pc-tone-horizon, 0.072)
       ) 0%,
       transparent 68%
     );
   filter: blur(20px);
   mix-blend-mode: screen;
-  transform: translateY(calc(var(--pc-scroll-progress, 0) * -2vh));
+  transform: translateY(var(--pc-horizon-shift, 0vh));
   transition:
     opacity 900ms ease,
     background 900ms ease;
