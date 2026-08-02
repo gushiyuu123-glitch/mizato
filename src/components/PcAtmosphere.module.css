@@ -1,0 +1,118 @@
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.pointerLight,
+.horizonLight,
+.edgeShade,
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pointerLight {
+  opacity: 0.58;
+  background:
+    radial-gradient(
+      circle 28rem at var(--pc-pointer-x, 58vw) var(--pc-pointer-y, 42vh),
+      rgb(
+        var(--pc-tone-r, 222)
+        var(--pc-tone-g, 145)
+        var(--pc-tone-b, 76)
+        / calc(var(--pc-tone-strength, 0.18) * 0.42)
+      ) 0%,
+      rgb(
+        var(--pc-tone-r, 222)
+        var(--pc-tone-g, 145)
+        var(--pc-tone-b, 76)
+        / calc(var(--pc-tone-strength, 0.18) * 0.12)
+      ) 34%,
+      transparent 74%
+    );
+  mix-blend-mode: screen;
+  transition: opacity 700ms ease;
+  will-change: background;
+}
+
+:global([data-pc-pointer="idle"]) .pointerLight {
+  opacity: 0.34;
+}
+
+.horizonLight {
+  top: auto;
+  height: 24vh;
+  opacity: calc(0.17 + var(--pc-scroll-progress, 0) * 0.12);
+  background:
+    radial-gradient(
+      ellipse at 50% 108%,
+      rgb(
+        var(--pc-tone-r, 222)
+        var(--pc-tone-g, 145)
+        var(--pc-tone-b, 76)
+        / calc(var(--pc-tone-strength, 0.18) * 0.4)
+      ) 0%,
+      transparent 68%
+    );
+  filter: blur(20px);
+  mix-blend-mode: screen;
+  transform: translateY(calc(var(--pc-scroll-progress, 0) * -2vh));
+  transition:
+    opacity 900ms ease,
+    background 900ms ease;
+}
+
+.edgeShade {
+  z-index: 2;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.24) 0%,
+      transparent 7%,
+      transparent 93%,
+      rgba(0, 0, 0, 0.26) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.12) 0%,
+      transparent 12%,
+      transparent 86%,
+      rgba(0, 0, 0, 0.16) 100%
+    );
+}
+
+.grain {
+  z-index: 3;
+  opacity: 0.024;
+  background-image:
+    repeating-radial-gradient(
+      circle at 17% 31%,
+      rgba(255, 255, 255, 0.28) 0,
+      rgba(255, 255, 255, 0.28) 0.45px,
+      transparent 0.8px,
+      transparent 3.4px
+    );
+  background-size: 6px 6px;
+  mix-blend-mode: soft-light;
+}
+
+@media (max-width: 1024px) {
+  .atmosphere {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pointerLight {
+    display: none;
+  }
+
+  .horizonLight {
+    transform: none;
+  }
+}
