@@ -1,20 +1,8 @@
-import { useLayoutEffect, useRef } from "react";
-import { setupBrandHeader } from "../effects/setupBrandHeader.js";
 import styles from "./BrandHeaderSp.module.css";
 
 export default function BrandHeaderSp() {
-  const headerRef = useRef(null);
-
-  useLayoutEffect(() => {
-    return setupBrandHeader(headerRef.current);
-  }, []);
-
   return (
-    <header
-      ref={headerRef}
-      className={styles.header}
-      data-brand-header
-    >
+    <header className={styles.header}>
       <a
         className={styles.logoLink}
         href="#top"
