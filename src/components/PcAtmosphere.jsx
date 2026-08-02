@@ -17,7 +17,9 @@ function setTone(root, sceneId) {
   root.style.setProperty("--pc-tone-r", String(tone.red));
   root.style.setProperty("--pc-tone-g", String(tone.green));
   root.style.setProperty("--pc-tone-b", String(tone.blue));
-  root.style.setProperty("--pc-tone-strength", String(tone.strength));
+  root.style.setProperty("--pc-tone-soft", String(tone.strength * 0.42));
+  root.style.setProperty("--pc-tone-faint", String(tone.strength * 0.12));
+  root.style.setProperty("--pc-tone-horizon", String(tone.strength * 0.4));
 }
 
 export default function PcAtmosphere() {
@@ -74,6 +76,11 @@ export default function PcAtmosphere() {
       const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
 
       world.style.setProperty("--pc-scroll-progress", String(progress));
+      world.style.setProperty(
+        "--pc-horizon-opacity",
+        String(0.17 + progress * 0.12)
+      );
+      world.style.setProperty("--pc-horizon-shift", `${progress * -2}vh`);
     };
 
     const sections = Array.from(world.querySelectorAll("main > section"));
@@ -142,10 +149,14 @@ export default function PcAtmosphere() {
         "--pc-pointer-x",
         "--pc-pointer-y",
         "--pc-scroll-progress",
+        "--pc-horizon-opacity",
+        "--pc-horizon-shift",
         "--pc-tone-r",
         "--pc-tone-g",
         "--pc-tone-b",
-        "--pc-tone-strength",
+        "--pc-tone-soft",
+        "--pc-tone-faint",
+        "--pc-tone-horizon",
       ].forEach((property) => world.style.removeProperty(property));
     };
   }, []);
