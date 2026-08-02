@@ -50,6 +50,7 @@ export default function Information() {
       className={styles.information}
       id="information"
       aria-labelledby="information-title"
+      aria-describedby="information-summary"
     >
       <div className={styles.inner}>
         <div className={styles.leftPanel}>
@@ -61,6 +62,9 @@ export default function Information() {
               className={styles.entranceImage}
               src="/images/information-entrance.png"
               alt="暖簾の奥に見えるMIZATOのカウンター"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
               data-information-image
             />
 
@@ -94,10 +98,10 @@ export default function Information() {
               Information
             </h2>
 
-            <p className={styles.introCopy}>
+            <p id="information-summary" className={styles.introCopy}>
               ご来店の前に。
               <br />
-              営業時間やお席についてご案内します。
+              営業時間やお席、チャージについてご案内します。
             </p>
           </header>
         </div>
@@ -116,7 +120,7 @@ export default function Information() {
               data-information-item
             >
               <dt className={styles.label}>
-                <span className={styles.labelEnglish}>
+                <span className={styles.labelEnglish} aria-hidden="true">
                   {item.labelEn}
                 </span>
 
