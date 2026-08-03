@@ -21,10 +21,11 @@ export default function HeroSp() {
         className={styles.liquidCanvas}
         aria-hidden="true"
         style={{
-          backgroundImage: 'url("/images/hero-counter-sp.webp")',
+          backgroundImage: 'url("/images/hero-counter-sp-v3.webp")',
           backgroundSize: "cover",
-          backgroundPosition: "42% center",
+          backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
+          filter: "brightness(1.12) saturate(1.02)",
         }}
       />
 
