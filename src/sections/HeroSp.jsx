@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef } from "react";
-import HeroLiquidCanvas from "../effects/HeroLiquidCanvas.jsx";
 import { setupHeroParallax } from "../effects/setupHeroParallax.js";
 import styles from "./HeroSp.module.css";
 
@@ -18,10 +17,17 @@ export default function HeroSp() {
       aria-labelledby="hero-title"
       aria-describedby="hero-description hero-hours"
     >
-      <HeroLiquidCanvas
-        className={styles.liquidCanvas}
-        image="/images/hero-counter.jpeg"
-      />
+      <div className={styles.liquidCanvas} aria-hidden="true">
+        <img
+          className={styles.heroImage}
+          src="/images/hero.jpeg"
+          alt=""
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          draggable="false"
+        />
+      </div>
 
       <a
         className={styles.reserveLink}
@@ -46,6 +52,7 @@ export default function HeroSp() {
               className={styles.logoImage}
               src="/images/mizato-logo.svg"
               alt=""
+              decoding="async"
               fetchPriority="high"
               draggable="false"
             />
