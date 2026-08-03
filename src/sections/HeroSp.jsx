@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef } from "react";
-import HeroLiquidCanvas from "../effects/HeroLiquidCanvas.jsx";
 import { setupHeroParallax } from "../effects/setupHeroParallax.js";
 import styles from "./HeroSp.module.css";
 
@@ -18,9 +17,15 @@ export default function HeroSp() {
       aria-labelledby="hero-title"
       aria-describedby="hero-description hero-hours"
     >
-      <HeroLiquidCanvas
+      <div
         className={styles.liquidCanvas}
-        image="/images/hero-counter-sp.webp"
+        aria-hidden="true"
+        style={{
+          backgroundImage: 'url("/images/hero-counter-sp.webp")',
+          backgroundSize: "cover",
+          backgroundPosition: "42% center",
+          backgroundRepeat: "no-repeat",
+        }}
       />
 
       <a
