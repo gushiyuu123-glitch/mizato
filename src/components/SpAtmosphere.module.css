@@ -12,12 +12,40 @@
   opacity: 1;
 }
 
+.ambient,
 .glow,
 .edgeShade,
 .grain {
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+.ambient {
+  background:
+    radial-gradient(
+      ellipse at 50% 8%,
+      rgb(
+        var(--sp-tone-r, 221)
+        var(--sp-tone-g, 145)
+        var(--sp-tone-b, 78)
+        / var(--sp-tone-soft, 0.04)
+      ) 0%,
+      rgb(
+        var(--sp-tone-r, 221)
+        var(--sp-tone-g, 145)
+        var(--sp-tone-b, 78)
+        / var(--sp-tone-faint, 0.012)
+      ) 34%,
+      transparent 68%
+    );
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+  transform: translate3d(0, var(--sp-ambient-shift, 2.2vh), 0) scale(1.04);
+  transition:
+    background 950ms ease,
+    opacity 700ms ease;
 }
 
 .glow {
@@ -30,20 +58,34 @@
         var(--sp-tone-r, 221)
         var(--sp-tone-g, 145)
         var(--sp-tone-b, 78)
-        / var(--sp-tone-soft, 0.08)
+        / var(--sp-tone-soft, 0.04)
       ) 0%,
       rgb(
         var(--sp-tone-r, 221)
         var(--sp-tone-g, 145)
         var(--sp-tone-b, 78)
-        / var(--sp-tone-faint, 0.025)
+        / var(--sp-tone-faint, 0.012)
       ) 40%,
       transparent 76%
     );
   filter: blur(18px);
   mix-blend-mode: screen;
   transform: translateY(var(--sp-glow-shift, 0vh));
-  transition: background 900ms ease;
+  transition:
+    background 950ms ease,
+    opacity 700ms ease;
+}
+
+:global([data-sp-scene="top"]) .ambient {
+  opacity: 0.28;
+}
+
+:global([data-sp-scene="top"]) .glow {
+  opacity: 0.34;
+}
+
+:global([data-sp-scene="access"]) .ambient {
+  opacity: 0.48;
 }
 
 .edgeShade {
@@ -51,41 +93,46 @@
   background:
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.19) 0%,
-      transparent 9%,
-      transparent 91%,
-      rgba(0, 0, 0, 0.23) 100%
+      rgba(0, 0, 0, 0.14) 0%,
+      transparent 8%,
+      transparent 92%,
+      rgba(0, 0, 0, 0.18) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.11) 0%,
-      transparent 14%,
-      transparent 84%,
-      rgba(0, 0, 0, 0.16) 100%
+      rgba(0, 0, 0, 0.08) 0%,
+      transparent 13%,
+      transparent 86%,
+      rgba(0, 0, 0, 0.12) 100%
     );
 }
 
 .grain {
   z-index: 3;
-  opacity: 0.024;
+  opacity: 0.018;
   background-image:
     repeating-radial-gradient(
       circle at 18% 27%,
-      rgba(255, 255, 255, 0.24) 0,
-      rgba(255, 255, 255, 0.24) 0.45px,
-      transparent 0.75px,
+      rgba(255, 255, 255, 0.22) 0,
+      rgba(255, 255, 255, 0.22) 0.42px,
+      transparent 0.72px,
       transparent 3.2px
     );
   background-size: 6px 6px;
   mix-blend-mode: soft-light;
+  transform: translate3d(0, var(--sp-grain-y, 0), 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere {
+  .atmosphere,
+  .ambient,
+  .glow {
     transition: none;
   }
 
-  .glow {
+  .ambient,
+  .glow,
+  .grain {
     transform: none;
   }
 }
