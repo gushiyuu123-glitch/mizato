@@ -2,13 +2,13 @@ import { useEffect, useRef } from "react";
 import styles from "./SpAtmosphere.module.css";
 
 const SCENE_TONES = {
-  top: { red: 221, green: 145, blue: 78, soft: 0.08, faint: 0.025 },
-  concept: { red: 173, green: 93, blue: 49, soft: 0.065, faint: 0.02 },
-  signature: { red: 218, green: 151, blue: 91, soft: 0.082, faint: 0.024 },
-  counter: { red: 147, green: 78, blue: 47, soft: 0.055, faint: 0.018 },
-  menu: { red: 195, green: 130, blue: 74, soft: 0.075, faint: 0.023 },
-  information: { red: 178, green: 110, blue: 63, soft: 0.06, faint: 0.019 },
-  access: { red: 117, green: 82, blue: 72, soft: 0.05, faint: 0.016 },
+  top: { red: 221, green: 145, blue: 78, soft: 0.04, faint: 0.012 },
+  concept: { red: 170, green: 91, blue: 48, soft: 0.06, faint: 0.018 },
+  signature: { red: 218, green: 151, blue: 91, soft: 0.076, faint: 0.022 },
+  counter: { red: 142, green: 73, blue: 43, soft: 0.052, faint: 0.016 },
+  menu: { red: 195, green: 130, blue: 74, soft: 0.068, faint: 0.021 },
+  information: { red: 178, green: 110, blue: 63, soft: 0.056, faint: 0.017 },
+  access: { red: 117, green: 82, blue: 72, soft: 0.044, faint: 0.014 },
 };
 
 function applyTone(world, sceneId) {
@@ -67,7 +67,7 @@ export default function SpAtmosphere() {
     }
 
     const sections = Array.from(
-      world.querySelectorAll("main > section[data-sp-scene]")
+      world.querySelectorAll("main section[data-sp-scene]")
     );
     const visibleSections = new Map();
 
@@ -94,8 +94,8 @@ export default function SpAtmosphere() {
         applyTone(world, sceneId);
       },
       {
-        rootMargin: "-31% 0px -31% 0px",
-        threshold: [0.01, 0.15, 0.35, 0.62],
+        rootMargin: "-30% 0px -30% 0px",
+        threshold: [0.01, 0.12, 0.28, 0.5, 0.72],
       }
     );
 
@@ -119,6 +119,14 @@ export default function SpAtmosphere() {
         world.style.setProperty(
           "--sp-glow-shift",
           `${(-3.5 * progress).toFixed(2)}vh`
+        );
+        world.style.setProperty(
+          "--sp-ambient-shift",
+          `${(2.2 - 5.2 * progress).toFixed(2)}vh`
+        );
+        world.style.setProperty(
+          "--sp-grain-y",
+          `${(-8 * progress).toFixed(2)}px`
         );
 
         frameId = 0;
@@ -152,6 +160,8 @@ export default function SpAtmosphere() {
         "--sp-tone-faint",
         "--sp-progress",
         "--sp-glow-shift",
+        "--sp-ambient-shift",
+        "--sp-grain-y",
       ].forEach((property) => world.style.removeProperty(property));
     };
   }, []);
@@ -162,6 +172,7 @@ export default function SpAtmosphere() {
       className={styles.atmosphere}
       aria-hidden="true"
     >
+      <span className={styles.ambient} />
       <span className={styles.glow} />
       <span className={styles.edgeShade} />
       <span className={styles.grain} />
