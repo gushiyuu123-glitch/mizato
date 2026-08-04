@@ -9,6 +9,8 @@ import MenuSp from "./sections/MenuSp.jsx";
 import InformationSp from "./sections/InformationSp.jsx";
 import AccessSp from "./sections/AccessSp.jsx";
 
+import "./styles/SpUltimate.css";
+
 export default function AppSp() {
   return (
     <div data-sp-world data-sp-scene="top">
