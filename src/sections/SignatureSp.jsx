@@ -37,6 +37,7 @@ export default function SignatureSp() {
       ref={signatureRef}
       className={styles.signature}
       id="signature"
+      data-sp-scene="signature"
       aria-labelledby="signature-title"
       aria-describedby="signature-summary"
     >
