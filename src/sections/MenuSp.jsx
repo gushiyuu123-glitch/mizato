@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./MenuSp.module.css";
 
 const menuCategories = [
@@ -37,9 +37,78 @@ const menuCategories = [
   },
 ];
 
+function clampCategoryIndex(index) {
+  const length = menuCategories.length;
+  return (index + length) % length;
+}
+
 export default function MenuSp() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const categoryButtonsRef = useRef([]);
+  const touchStartRef = useRef(null);
   const activeCategory = menuCategories[activeIndex];
+
+  const selectCategory = (nextIndex, { focus = false } = {}) => {
+    const resolvedIndex = clampCategoryIndex(nextIndex);
+    setActiveIndex(resolvedIndex);
+
+    if (focus) {
+      window.requestAnimationFrame(() => {
+        categoryButtonsRef.current[resolvedIndex]?.focus();
+      });
+    }
+  };
+
+  const handleTabKeyDown = (event, index) => {
+    let nextIndex = null;
+
+    if (event.key === "ArrowRight") {
+      nextIndex = index + 1;
+    } else if (event.key === "ArrowLeft") {
+      nextIndex = index - 1;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = menuCategories.length - 1;
+    }
+
+    if (nextIndex === null) {
+      return;
+    }
+
+    event.preventDefault();
+    selectCategory(nextIndex, { focus: true });
+  };
+
+  const handleTouchStart = (event) => {
+    const touch = event.touches[0];
+
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+    };
+  };
+
+  const handleTouchEnd = (event) => {
+    const start = touchStartRef.current;
+    const touch = event.changedTouches[0];
+    touchStartRef.current = null;
+
+    if (!start || !touch) {
+      return;
+    }
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const isHorizontalGesture =
+      Math.abs(deltaX) >= 46 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2;
+
+    if (!isHorizontalGesture) {
+      return;
+    }
+
+    selectCategory(activeIndex + (deltaX < 0 ? 1 : -1));
+  };
 
   return (
     <section
@@ -81,14 +150,19 @@ export default function MenuSp() {
           return (
             <button
               key={category.name}
+              ref={(node) => {
+                categoryButtonsRef.current[index] = node;
+              }}
               type="button"
               className={styles.categoryButton}
               role="tab"
+              aria-label={`${category.japanese}、${category.name}`}
               aria-selected={isActive}
               aria-controls="active-menu-page"
               tabIndex={isActive ? 0 : -1}
               data-active={isActive ? "true" : "false"}
-              onClick={() => setActiveIndex(index)}
+              onClick={() => selectCategory(index)}
+              onKeyDown={(event) => handleTabKeyDown(event, index)}
             >
               <span>{category.japanese}</span>
               <small>{category.name}</small>
@@ -97,12 +171,18 @@ export default function MenuSp() {
         })}
       </div>
 
-      <div className={styles.menuStage} data-sp-reveal>
+      <div
+        className={styles.menuStage}
+        data-sp-reveal
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <article
           key={activeCategory.name}
           id="active-menu-page"
           className={styles.menuPage}
           role="tabpanel"
+          aria-live="polite"
         >
           <header className={styles.pageHeader}>
             <p className={styles.pageEnglish}>{activeCategory.name}</p>
