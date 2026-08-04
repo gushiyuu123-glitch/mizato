@@ -14,6 +14,7 @@ export default function HeroSp() {
       id="top"
       ref={heroRef}
       className={styles.hero}
+      data-sp-scene="top"
       aria-labelledby="hero-title"
       aria-describedby="hero-description hero-hours"
     >
