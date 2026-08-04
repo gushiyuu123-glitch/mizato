@@ -14,6 +14,7 @@ export default function ConceptSp() {
       ref={conceptRef}
       className={styles.concept}
       id="conceptsp"
+      data-sp-scene="concept"
       aria-labelledby="concept-title"
       aria-describedby="concept-summary"
     >
