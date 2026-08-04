@@ -45,17 +45,12 @@ export default function CounterSp() {
 
       hasPlayedRef.current = true;
       revealMedia();
-
       video.currentTime = 0;
 
       const playPromise = video.play();
 
       if (playPromise?.catch) {
         playPromise.catch(() => {
-          /*
-            自動再生が止められた場合も、
-            静止画として映像の先頭フレームは残す。
-          */
           video.pause();
         });
       }
@@ -90,6 +85,7 @@ export default function CounterSp() {
       ref={counterRef}
       className={styles.counter}
       id="countersp"
+      data-sp-scene="counter"
       aria-labelledby="counter-title"
       aria-describedby="counter-description"
     >
